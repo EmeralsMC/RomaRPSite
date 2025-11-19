@@ -836,6 +836,31 @@
         }catch(e){ console.error('Site announcement init failed', e); }
       })();
   </script>
+  <script>
+    // Logout handler: clears staff session and redirects to login/home
+    (function(){
+      function doLogout(){
+        try{
+          sessionStorage.removeItem('rprp_staff');
+          // optional: clear other staff-related keys if present
+          try{ localStorage.removeItem('rprp_staff_profile'); }catch(e){}
+          if(typeof showNotif === 'function'){
+            showNotif('Logout','Hai effettuato il logout.', 'info');
+            setTimeout(function(){ window.location.href = 'staff-login.html'; }, 700);
+          } else {
+            // fallback
+            setTimeout(function(){ window.location.href = 'staff-login.html'; }, 150);
+          }
+        }catch(e){ console.error('logout failed', e); window.location.href = 'index.html'; }
+      }
+      document.addEventListener('DOMContentLoaded', function(){
+        var btn = document.getElementById('staff-logout');
+        if(btn){ btn.addEventListener('click', function(e){ e.preventDefault(); if(confirm('Sei sicuro di voler effettuare il logout?')) doLogout(); }); }
+      });
+      // expose for manual call
+      window.staffLogout = doLogout;
+    })();
+  </script>
   <!-- Site announcement renderer (shows site-wide popup if published by staff) -->
   <script>
   (function(){
