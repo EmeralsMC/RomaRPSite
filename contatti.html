@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contattaci - ROMA RP</title>
+  <link rel="stylesheet" href="code.css" />
+</head>
+<body>
+  <header class="nav">
+    <div class="wrap container">
+      <a class="brand" href="index.html"><img src="download.png" alt="Logo Roma RP" class="logo-small"></a>
+  <button class="nav-toggle" aria-expanded="false" aria-label="Apri menu"> <span class="bar"></span> </button>
+  <nav class="links" aria-label="Primaria">
+        <a href="index.html">Home</a>
+        <a href="chi-siamo.html">Chi Siamo</a>
+        <a href="roleplay.html">RolePlay</a>
+        <a href="negozio.html">Negozio</a>
+  <a href="contatti.html" class="cta" aria-current="page">Contattaci</a>
+  <a id="nav-login-btn" class="btn nav-login" href="staff-login.html">Accedi</a>
+      </nav>
+    </div>
+  </header>
+  <script>
+    (function(){
+      const nav = document.querySelector('.nav'); const toggle = document.querySelector('.nav-toggle');
+      if(toggle){ toggle.addEventListener('click', function(){ const opened = nav.classList.toggle('nav-open'); toggle.setAttribute('aria-expanded', opened ? 'true' : 'false'); }); }
+      const staff = sessionStorage.getItem('rprp_staff'); if(staff){ const a = document.getElementById('nav-login-btn'); if(a){ a.textContent = staff; a.classList.add('profile'); a.href = 'staff-dashboard.html'; } }
+    })();
+  </script>
+  <main class="container">
+    <div style="position:relative;z-index:1;">
+      <div style="position:absolute;inset:0;z-index:-1;pointer-events:none;filter:blur(2.5px);opacity:.8;background:
+        radial-gradient(ellipse at 60% 0,#f4c43044 0,#6c5ce722 60%,transparent 100%),
+        linear-gradient(120deg,rgba(244,196,48,0.13),rgba(108,92,231,0.13),rgba(20,24,38,0.98));"></div>
+      <section class="glass-card animate-scalein" style="max-width:620px;margin:5.5rem auto 3.5rem auto;padding:3.2rem 2.7rem 2.7rem 2.7rem;box-shadow:0 32px 80px 0 rgba(244,196,48,0.22),0 12px 40px 0 rgba(108,92,231,0.15);border-radius:44px;text-align:center;backdrop-filter:blur(12px) saturate(1.3);border:2.5px solid #f4c43077;overflow:visible;">
+        <div style="font-size:3.5rem;margin-bottom:1.2rem;filter:drop-shadow(0 2px 24px #f4c43077);animation:wowFadeIn 1.2s cubic-bezier(.4,1.6,.4,1);">📬</div>
+        <div class="luxury-badge wow-badge-glow" style="font-size:1.45em;font-weight:900;margin-bottom:1.5em;letter-spacing:-.5px;box-shadow:0 4px 24px #f4c43055,0 2px 12px #6c5ce7aa;">Contattaci</div>
+        <div style="font-size:1.22em;margin-bottom:2.1em;line-height:1.6;">Hai domande, richieste o vuoi collaborare?<br>Compila il modulo qui sotto e ti risponderemo il prima possibile!</div>
+        <form class="form" onsubmit="event.preventDefault(); alert('Messaggio inviato! (demo)')" style="display:flex;flex-direction:column;gap:1.5em;align-items:center;animation:wowFadeInUp 1.2s .2s both;">
+          <div style="display:flex;gap:1.1em;width:100%;max-width:440px;">
+            <div style="flex:1;position:relative;">
+              <input class="input" type="text" id="contact-name" required style="width:100%;border-radius:18px;padding:1.15em 1em 1.15em 1.1em;font-size:1.13em;background:rgba(20,24,38,0.92);color:#fffbe6;border:2px solid #f4c43055;box-shadow:0 2px 12px #f4c43022;transition:box-shadow .2s,border-color .2s;outline:none;" onfocus="this.style.boxShadow='0 0 0 3px #f4c43088';this.style.borderColor='#f4c430'" onblur="this.style.boxShadow='0 2px 12px #f4c43022';this.style.borderColor='#f4c43055'" placeholder=" " />
+              <label for="contact-name" style="position:absolute;left:1.2em;top:1.1em;font-size:.98em;color:#f4c430;pointer-events:none;transition:.2s;opacity:.85;">Nome</label>
+            </div>
+            <div style="flex:1;position:relative;">
+              <input class="input" type="email" id="contact-email" required style="width:100%;border-radius:18px;padding:1.15em 1em 1.15em 1.1em;font-size:1.13em;background:rgba(20,24,38,0.92);color:#fffbe6;border:2px solid #6c5ce755;box-shadow:0 2px 12px #6c5ce722;transition:box-shadow .2s,border-color .2s;outline:none;" onfocus="this.style.boxShadow='0 0 0 3px #6c5ce788';this.style.borderColor='#6c5ce7'" onblur="this.style.boxShadow='0 2px 12px #6c5ce722';this.style.borderColor='#6c5ce755'" placeholder=" " />
+              <label for="contact-email" style="position:absolute;left:1.2em;top:1.1em;font-size:.98em;color:#6c5ce7;pointer-events:none;transition:.2s;opacity:.85;">Email</label>
+            </div>
+          </div>
+          <div style="width:100%;max-width:440px;position:relative;">
+            <textarea class="textarea" id="contact-msg" required style="width:100%;border-radius:18px;padding:1.15em 1em 1.15em 1.1em;font-size:1.13em;min-height:120px;background:rgba(20,24,38,0.92);color:#fffbe6;border:2px solid #6c5ce755;box-shadow:0 2px 12px #6c5ce722;transition:box-shadow .2s,border-color .2s;outline:none;" onfocus="this.style.boxShadow='0 0 0 3px #f4c43088';this.style.borderColor='#f4c430'" onblur="this.style.boxShadow='0 2px 12px #6c5ce722';this.style.borderColor='#6c5ce755'" placeholder=" "></textarea>
+            <label for="contact-msg" style="position:absolute;left:1.2em;top:1.1em;font-size:.98em;color:#6c5ce7;pointer-events:none;transition:.2s;opacity:.85;">Messaggio</label>
+          </div>
+          <button class="shop-btn icon-anim" id="contact-send-btn" type="submit" style="width:100%;max-width:240px;font-weight:900;background:linear-gradient(90deg,#f4c430 60%,#fffbe6 100%);color:#181818;padding:.9em 0;border-radius:18px;box-shadow:0 6px 24px #f4c43033;font-size:1.22em;letter-spacing:-.5px;">Invia <span style="margin-left:.5em;font-size:1.2em;vertical-align:middle;">🚀</span></button>
+        </form>
+        <script>
+        // Salva la segnalazione in localStorage e mostra notifica
+        document.getElementById('contact-send-btn').addEventListener('click', function(){
+          var name = document.getElementById('contact-name').value.trim();
+          var email = document.getElementById('contact-email').value.trim();
+          var msg = document.getElementById('contact-msg').value.trim();
+          if(!name || !email || !msg) return;
+          var key = 'rprp_reports';
+          var arr = JSON.parse(localStorage.getItem(key) || '[]');
+          arr.push({ id: 'rprp_' + Date.now() + '_' + Math.floor(Math.random()*10000), name, email, msg, ts: Date.now(), source: 'contatti', read: false });
+          localStorage.setItem(key, JSON.stringify(arr));
+        });
+        </script>
+        <div style="margin-top:3em;">
+          <div class="luxury-badge animate-scalein" style="font-size:1.18em;margin-bottom:1em;">🌐 Altri contatti</div>
+          <ul style="list-style:none;padding:0;margin:0;display:flex;justify-content:center;gap:2.2em;">
+            <li><a href="https://discord.gg/XBvYQG3U" target="_blank" rel="noopener" class="icon-anim" style="font-size:1.28em;font-weight:900;color:#6c5ce7;display:flex;align-items:center;gap:.5em;"><span style="font-size:1.8em;">💬</span> Discord</a></li>
+            <li><a href="https://www.tiktok.com/@roma_rrp?lang=it-IT" target="_blank" rel="noopener" class="icon-anim" style="font-size:1.28em;font-weight:900;color:#f4c430;display:flex;align-items:center;gap:.5em;"><span style="font-size:1.8em;">🎵</span> TikTok</a></li>
+          </ul>
+        </div>
+      </section>
+    </div>
+  </main>
+  <script>
+    document.getElementById('nav-login-btn').addEventListener('click', function(){
+      if(window.openRomaLogin){ window.openRomaLogin(); } else { window.location.href = 'index.html#login'; }
+    });
+    document.getElementById('nav-login-btn').addEventListener('click', function(){
+      if(window.openRomaLogin){ window.openRomaLogin(); } else { window.location.href = 'index.html#login'; }
+    });
+    // Animazione, tooltip e suono per bottone segnalazione
+    (function(){
+      const btn = document.getElementById('report-btn');
+      const tooltip = document.getElementById('report-tooltip');
+      if(btn) {
+        btn.style.zIndex = 99999;
+        btn.tabIndex = 0;
+        btn.addEventListener('focus', ()=> btn.style.boxShadow = '0 0 0 4px #ffe082');
+        btn.addEventListener('blur', ()=> btn.style.boxShadow = '0 4px 24px 0 rgba(244,196,48,0.18),0 0 16px 2px #ffe08280');
+        btn.addEventListener('mouseenter', ()=>{ if(tooltip) tooltip.style.opacity = 1; });
+        btn.addEventListener('mouseleave', ()=>{ if(tooltip) tooltip.style.opacity = 0; });
+      }
+    })();
+    // Sistema segnalazione moderno e uniforme
+    (function(){
+      const btn = document.getElementById('report-btn');
+      const modal = document.getElementById('report-modal');
+      const formName = document.getElementById('rep-name');
+      const formDiscord = document.getElementById('rep-discord');
+      const formType = document.getElementById('rep-type');
+      const formDesc = document.getElementById('rep-desc');
+      const cancelBtn = document.getElementById('rep-cancel');
+      const sendBtn = document.getElementById('rep-send');
+      let isOpen = false;
+      function openReport(){
+        if(isOpen) return;
+        isOpen = true;
+        modal.style.display = 'flex';
+        // animazione modal
+        const modalContent = modal.querySelector('.modal-content');
+        if(modalContent) {
+          modalContent.classList.remove('animated');
+          void modalContent.offsetWidth;
+          modalContent.classList.add('animated');
+        }
+        // suono
+        const audio = document.getElementById('report-open-audio');
+        if(audio) { audio.currentTime = 0; audio.play(); }
+        setTimeout(()=>{ formName.focus(); }, 100);
+      }
+      function closeReport(){
+        if(!isOpen) return;
+        isOpen = false;
+        modal.style.display = 'none';
+      }
+      btn.addEventListener('click', openReport);
+      cancelBtn.addEventListener('click', closeReport);
+      // invio
+      sendBtn.addEventListener('click', function(){
+        const name = formName.value.trim();
+        const discord = formDiscord.value.trim();
+        const type = formType.value;
+        const desc = formDesc.value.trim();
+        if(!type || !desc){ alert('Compila tutti i campi obbligatori.'); return; }
+        const id = 'rprp_' + Date.now() + '_' + Math.floor(Math.random()*10000);
+        const payload = { id, name, discord, type, desc, ts: Date.now(), source: window.location.pathname, read: false };
+        const key = 'rprp_reports';
+        const arr = JSON.parse(localStorage.getItem(key) || '[]'); arr.push(payload); localStorage.setItem(key, JSON.stringify(arr));
+        closeReport(); alert('Segnalazione inviata! Lo staff la vedrà nella dashboard.');
+        // reset form
+        formName.value = '';
+        formDiscord.value = '';
+        formType.value = '';
+        formDesc.value = '';
+      });
+      // Chiudi modal con ESC
+      document.addEventListener('keydown', function(e){
+        if(e.key === 'Escape') closeReport();
+      });
+      // Chiudi cliccando fuori
+      modal.addEventListener('click', function(e){
+        if(e.target === modal) closeReport();
+      });
+    })();
+  </script>
+  <!-- Site announcement renderer (shows site-wide popup if published by staff) -->
+  <script>
+  (function(){
+    try{
+      function removeOverlay(){ const existing = document.getElementById('site-ann-overlay'); if(existing) existing.remove(); }
+      function renderSiteAnnouncement(ann){ try{
+        removeOverlay();
+        if(!ann || !ann.active) return;
+        if(ann.expiresAt && Date.now() > ann.expiresAt) return;
+        const dismissKey = 'rprp_site_announcement_dismissed_' + (ann.id || 'default');
+        if(sessionStorage.getItem(dismissKey)) return;
+        if(document.getElementById('site-ann-overlay')) return;
+        const overlay = document.createElement('div'); overlay.id = 'site-ann-overlay';
+        const card = document.createElement('div'); card.className = 'site-announcement';
+        const closeBtn = document.createElement('button'); closeBtn.className = 'close-btn'; closeBtn.innerHTML = '✕';
+        closeBtn.addEventListener('click', ()=>{ sessionStorage.setItem(dismissKey,'1'); overlay.remove(); });
+        const title = document.createElement('h3'); title.innerHTML = ann.title || 'Annuncio';
+        const body = document.createElement('div'); body.className = 'body'; body.innerHTML = ann.html || ann.text || '';
+        const actions = document.createElement('div'); actions.className = 'actions';
+        const ok = document.createElement('button'); ok.className = 'btn primary'; ok.textContent = 'Chiudi'; ok.addEventListener('click', ()=>{ sessionStorage.setItem(dismissKey,'1'); overlay.remove(); });
+        actions.appendChild(ok);
+        card.appendChild(closeBtn); card.appendChild(title); card.appendChild(body); card.appendChild(actions);
+        overlay.appendChild(card);
+        document.body.appendChild(overlay);
+        setTimeout(()=> overlay.classList.add('show'), 10);
+      }catch(e){ console.error('renderSiteAnnouncement failed', e); }}
+      function loadAndRender(){ try{ const raw = localStorage.getItem('rprp_site_announcement'); if(!raw){ removeOverlay(); return; } const ann = JSON.parse(raw); renderSiteAnnouncement(ann); }catch(e){ console.error('loadAndRender failed', e); } }
+      loadAndRender();
+      window.addEventListener('storage', function(e){ if(e.key === 'rprp_site_announcement'){ try{ if(!e.newValue){ const existing = document.getElementById('site-ann-overlay'); if(existing) existing.remove(); return; } loadAndRender(); }catch(err){ console.error('storage listener error', err); } } });
+      window.renderSiteAnnouncement = function(ann){ try{ renderSiteAnnouncement(ann); }catch(e){} };
+    }catch(e){ console.error('Announcement render failed', e); }
+  })();
+  </script>
+</body>
+</html>

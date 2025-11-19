@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chi Siamo - ROMA RP</title>
+  <link rel="stylesheet" href="code.css" />
+</head>
+<body>
+  <header class="nav">
+    <div class="wrap container">
+      <a class="brand" href="index.html"><img src="download.png" alt="Logo Roma RP" class="logo-small"></a>
+  <button class="nav-toggle" aria-expanded="false" aria-label="Apri menu"> <span class="bar"></span> </button>
+  <nav class="links" aria-label="Primaria">
+  <a href="index.html">Home</a>
+  <a href="chi-siamo.html" aria-current="page">Chi Siamo</a>
+  <a href="roleplay.html">RolePlay</a>
+  <a href="negozio.html">Negozio</a>
+  <a href="contatti.html" class="cta">Contattaci</a>
+  <a id="nav-login-btn" class="btn nav-login" href="staff-login.html">Accedi</a>
+      </nav>
+    </div>
+  </header>
+  <script>
+    (function(){
+      const nav = document.querySelector('.nav'); const toggle = document.querySelector('.nav-toggle');
+      if(toggle){ toggle.addEventListener('click', function(){ const opened = nav.classList.toggle('nav-open'); toggle.setAttribute('aria-expanded', opened ? 'true' : 'false'); }); }
+      const staff = sessionStorage.getItem('rprp_staff'); if(staff){ const a = document.getElementById('nav-login-btn'); if(a){ a.textContent = staff; a.classList.add('profile'); a.href = 'staff-dashboard.html'; } }
+    })();
+  </script>
+  <main class="container">
+    <!-- Bottone Segnala e Modal (unico, stile coerente) -->
+    <button id="report-btn" class="report-btn" title="Segnala un problema o abuso" style="position:fixed;bottom:32px;right:32px;z-index:99999;background:var(--accent);color:#fff;border:none;border-radius:999px;padding:.7em 1.5em .7em 1.1em;min-width:64px;box-shadow:0 4px 24px 0 rgba(244,196,48,0.18),0 0 16px 2px #ffe08280; font-size:1.25rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5em;transition:background .2s,box-shadow .3s,transform .18s;outline:none;animation:bounceIn .7s cubic-bezier(.4,1.6,.4,1);">
+      <span aria-hidden="true" style="font-size:1.5em;margin-right:.3em;">⚠️</span>
+      <span style="font-size:1.1em;font-weight:700;letter-spacing:-.5px;">Segnala</span>
+      <span id="report-tooltip" style="position:absolute;right:110%;bottom:50%;background:#222;color:#ffe082;padding:.45em 1em;border-radius:8px;font-size:.98em;white-space:nowrap;box-shadow:0 2px 12px #0005;opacity:0;pointer-events:none;transform:translateY(10px);transition:opacity .22s,transform .22s;">Invia una segnalazione allo staff</span>
+    </button>
+    <audio id="report-open-audio" src="https://cdn.pixabay.com/audio/2022/07/26/audio_124bfae3b2.mp3" preload="auto"></audio>
+    <div id="report-modal" class="modal-backdrop" style="display:none;align-items:center;justify-content:center;backdrop-filter:blur(2px);">
+      <div class="modal-content animated" role="dialog" aria-modal="true" aria-labelledby="report-title" style="max-width:420px;padding:2rem 2.2rem;box-shadow:0 8px 40px rgba(0,0,0,.25);border-radius:18px;background:#181818;">
+        <h3 id="report-title" style="margin-bottom:.5rem;font-size:1.35rem;">Segnala un problema</h3>
+        <div class="muted" style="margin-bottom:1.1rem;">Compila il modulo per inviare una segnalazione allo staff.<br><span style="font-size:.95em;">(Tutti i campi sono obbligatori)</span></div>
+        <div style="display:grid;gap:.7em;">
+          <input id="rep-name" class="input" type="text" maxlength="32" placeholder="Nome (opzionale)" style="width:100%;" />
+          <input id="rep-discord" class="input" type="text" maxlength="32" placeholder="Discord (opzionale, es. Nick#1234)" style="width:100%;" />
+          <select id="rep-type" class="input" required style="width:100%;">
+            <option value="">Tipo di segnalazione...</option>
+            <option value="bug">Bug</option>
+            <option value="abuso">Abuso</option>
+            <option value="altro">Altro</option>
+          </select>
+          <textarea id="rep-desc" class="input" required placeholder="Descrizione dettagliata" style="width:100%;min-height:90px;resize:vertical;"></textarea>
+          <div class="actions" style="margin-top:.7em;justify-content:flex-end;display:flex;gap:.7em;">
+            <button id="rep-cancel" class="btn outline" style="border-radius:8px;">Annulla</button>
+            <button id="rep-send" class="btn primary" style="border-radius:8px;font-size:1.13em;padding:.7em 0;">Invia Segnalazione</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <section class="chi-siamo-hero animate-fadein">
+      <div class="glass-hero" style="position:relative;overflow:visible;">
+        <div class="particles-overlay" id="particles-overlay"></div>
+        <img src="download.png" alt="Logo Roma RP" class="logo-hero animate-fadein">
+        <h1 class="chi-title">Benvenuto in ROMA RP</h1>
+        <p class="chi-desc">La community italiana di roleplay su ER:LC (Roblox) più attiva e realistica. Eventi settimanali, staff presente, regole chiare e tanto divertimento!</p>
+      </div>
+    </section>
+    <section class="chi-cards-section">
+      <div class="chi-cards">
+        <div class="chi-card animate-fadein">
+          <span class="chi-icon icon-anim">🎯</span>
+          <div>
+            <div class="chi-label">Mission</div>
+            <div class="chi-desc2">Offrire un ambiente immersivo, competitivo e rispettoso per tutti i giocatori.</div>
+          </div>
+        </div>
+        <div class="chi-card animate-fadein" style="animation-delay:.10s;">
+          <span class="chi-icon icon-anim">🤝</span>
+          <div>
+            <div class="chi-label">Community</div>
+            <div class="chi-desc2">Server accogliente, moderato e orientato alla crescita di tutti, nuovi e veterani.</div>
+          </div>
+        </div>
+        <div class="chi-card animate-fadein" style="animation-delay:.20s;">
+          <span class="chi-icon icon-anim">🏆</span>
+          <div>
+            <div class="chi-label">Eventi & Premi</div>
+            <div class="chi-desc2">Eventi settimanali, premi esclusivi e attività coinvolgenti per tutti i membri.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="chi-valori-section animate-fadein">
+      <div class="glass-card" style="padding:2rem 1.5rem;">
+        <h2 class="chi-title">I nostri valori</h2>
+        <ul class="chi-valori-list">
+          <li><span class="icon-anim">✔️</span> Rispetto e inclusività</li>
+          <li><span class="icon-anim">🔒</span> Sicurezza e moderazione</li>
+          <li><span class="icon-anim">💡</span> Creatività e innovazione</li>
+          <li><span class="icon-anim">🎉</span> Divertimento garantito</li>
+        </ul>
+      </div>
+    </section>
+    <section class="chi-staff-section animate-fadein">
+      <div class="glass-card" style="padding:2rem 1.5rem;">
+        <h2 class="chi-title">Il nostro Staff</h2>
+        <div class="chi-cards">
+          <div class="chi-card glass-card animate-fadein">
+            <span class="chi-icon icon-anim">👑</span>
+            <div>
+              <div class="chi-label">Founder</div>
+              <div class="chi-desc2">Chirs — Fondatore e amministratore principale, sempre disponibile per la community.</div>
+            </div>
+          </div>
+          <div class="chi-card glass-card animate-fadein" style="animation-delay:.10s;">
+            <span class="chi-icon icon-anim">🛡️</span>
+            <div>
+              <div class="chi-label">Moderatori</div>
+              <div class="chi-desc2">Team di moderatori attivo 24/7 per garantire rispetto e sicurezza.</div>
+            </div>
+          </div>
+          <div class="chi-card glass-card animate-fadein" style="animation-delay:.20s;">
+            <span class="chi-icon icon-anim">🎤</span>
+            <div>
+              <div class="chi-label">Event Manager</div>
+              <div class="chi-desc2">Organizzazione di eventi, contest e attività per tutta la community.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script>
+    document.getElementById('nav-login-btn').addEventListener('click', function(){
+      if(window.openRomaLogin){ window.openRomaLogin(); } else { window.location.href = 'index.html#login'; }
+    });
+  </script>
+  <script>
+    // Animazione, tooltip e suono per bottone segnalazione
+    (function(){
+      const btn = document.getElementById('report-btn');
+      const tooltip = document.getElementById('report-tooltip');
+      if(btn) {
+        btn.style.zIndex = 99999;
+        btn.tabIndex = 0;
+        btn.addEventListener('focus', ()=> btn.style.boxShadow = '0 0 0 4px #ffe082');
+        btn.addEventListener('blur', ()=> btn.style.boxShadow = '0 4px 24px 0 rgba(244,196,48,0.18),0 0 16px 2px #ffe08280');
+        btn.addEventListener('mouseenter', ()=>{ if(tooltip) tooltip.style.opacity = 1; });
+        btn.addEventListener('mouseleave', ()=>{ if(tooltip) tooltip.style.opacity = 0; });
+      }
+    })();
+    // Sistema segnalazione moderno e uniforme
+    (function(){
+      const btn = document.getElementById('report-btn');
+      const modal = document.getElementById('report-modal');
+      const formName = document.getElementById('rep-name');
+      const formDiscord = document.getElementById('rep-discord');
+      const formType = document.getElementById('rep-type');
+      const formDesc = document.getElementById('rep-desc');
+      const cancelBtn = document.getElementById('rep-cancel');
+      const sendBtn = document.getElementById('rep-send');
+      let isOpen = false;
+      function openReport(){
+        if(isOpen) return;
+        isOpen = true;
+        modal.style.display = 'flex';
+        // animazione modal
+        const modalContent = modal.querySelector('.modal-content');
+        if(modalContent) {
+          modalContent.classList.remove('animated');
+          void modalContent.offsetWidth;
+          modalContent.classList.add('animated');
+        }
+        // suono
+        const audio = document.getElementById('report-open-audio');
+        if(audio) { audio.currentTime = 0; audio.play(); }
+        setTimeout(()=>{ formName.focus(); }, 100);
+      }
+      function closeReport(){
+        if(!isOpen) return;
+        isOpen = false;
+        modal.style.display = 'none';
+      }
+      btn.addEventListener('click', openReport);
+      cancelBtn.addEventListener('click', closeReport);
+      // invio
+      sendBtn.addEventListener('click', function(){
+        const name = formName.value.trim();
+        const discord = formDiscord.value.trim();
+        const type = formType.value;
+        const desc = formDesc.value.trim();
+        if(!type || !desc){ alert('Compila tutti i campi obbligatori.'); return; }
+        const id = 'rprp_' + Date.now() + '_' + Math.floor(Math.random()*10000);
+        const payload = { id, name, discord, type, desc, ts: Date.now(), source: window.location.pathname, read: false };
+        const key = 'rprp_reports';
+        const arr = JSON.parse(localStorage.getItem(key) || '[]'); arr.push(payload); localStorage.setItem(key, JSON.stringify(arr));
+        closeReport(); alert('Segnalazione inviata! Lo staff la vedrà nella dashboard.');
+        // reset form
+        formName.value = '';
+        formDiscord.value = '';
+        formType.value = '';
+        formDesc.value = '';
+      });
+      // Chiudi modal con ESC
+      document.addEventListener('keydown', function(e){
+        if(e.key === 'Escape') closeReport();
+      });
+      // Chiudi cliccando fuori
+      modal.addEventListener('click', function(e){
+        if(e.target === modal) closeReport();
+      });
+    })();
+  </script>
+  <!-- Site announcement renderer (shows site-wide popup if published by staff) -->
+  <script>
+  (function(){
+    try{
+      function removeOverlay(){ const existing = document.getElementById('site-ann-overlay'); if(existing) existing.remove(); }
+      function renderSiteAnnouncement(ann){ try{
+        removeOverlay();
+        if(!ann || !ann.active) return;
+        if(ann.expiresAt && Date.now() > ann.expiresAt) return;
+        const dismissKey = 'rprp_site_announcement_dismissed_' + (ann.id || 'default');
+        if(sessionStorage.getItem(dismissKey)) return;
+        if(document.getElementById('site-ann-overlay')) return;
+        const overlay = document.createElement('div'); overlay.id = 'site-ann-overlay';
+        const card = document.createElement('div'); card.className = 'site-announcement';
+        const closeBtn = document.createElement('button'); closeBtn.className = 'close-btn'; closeBtn.innerHTML = '✕';
+        closeBtn.addEventListener('click', ()=>{ sessionStorage.setItem(dismissKey,'1'); overlay.remove(); });
+        const title = document.createElement('h3'); title.innerHTML = ann.title || 'Annuncio';
+        const body = document.createElement('div'); body.className = 'body'; body.innerHTML = ann.html || ann.text || '';
+        const actions = document.createElement('div'); actions.className = 'actions';
+        const ok = document.createElement('button'); ok.className = 'btn primary'; ok.textContent = 'Chiudi'; ok.addEventListener('click', ()=>{ sessionStorage.setItem(dismissKey,'1'); overlay.remove(); });
+        actions.appendChild(ok);
+        card.appendChild(closeBtn); card.appendChild(title); card.appendChild(body); card.appendChild(actions);
+        overlay.appendChild(card);
+        document.body.appendChild(overlay);
+        setTimeout(()=> overlay.classList.add('show'), 10);
+      }catch(e){ console.error('renderSiteAnnouncement failed', e); }}
+      function loadAndRender(){ try{ const raw = localStorage.getItem('rprp_site_announcement'); if(!raw){ removeOverlay(); return; } const ann = JSON.parse(raw); renderSiteAnnouncement(ann); }catch(e){ console.error('loadAndRender failed', e); } }
+      loadAndRender();
+      window.addEventListener('storage', function(e){ if(e.key === 'rprp_site_announcement'){ try{ if(!e.newValue){ removeOverlay(); return; } loadAndRender(); }catch(err){ console.error('storage listener error', err); } } });
+      window.renderSiteAnnouncement = function(ann){ try{ renderSiteAnnouncement(ann); }catch(e){} };
+    }catch(e){ console.error('Announcement render failed', e); }
+  })();
+  </script>
+</body>
+<script>
+// Animated gold/purple particles overlay (like staff login)
+(function(){
+  const overlay = document.getElementById('particles-overlay');
+  if(!overlay) return;
+  const n = 18, colors = ['#f4c430','#6c5ce7','#fffbe6','#e73f3f'];
+  for(let i=0;i<n;i++){
+    const p = document.createElement('div');
+    p.style.position='absolute';
+    p.style.left = Math.random()*100+'%';
+    p.style.top = Math.random()*100+'%';
+    p.style.width = (8+Math.random()*16)+'px';
+    p.style.height = p.style.width;
+    p.style.borderRadius = '50%';
+    p.style.background = colors[Math.floor(Math.random()*colors.length)];
+    p.style.opacity = 0.13+Math.random()*0.18;
+    p.style.filter = 'blur('+(2+Math.random()*6)+'px)';
+    p.style.zIndex = 2;
+    p.style.animation = `floatP${i} ${(2.5+Math.random()*2.5).toFixed(2)}s ease-in-out infinite alternate`;
+    overlay.appendChild(p);
+    const keyframes = `@keyframes floatP${i}{0%{transform:translateY(0) scale(1);}100%{transform:translateY(${Math.random()>0.5?'-':'+'}${16+Math.random()*32}px) scale(${1+Math.random()*0.18});}}`;
+    const style = document.createElement('style'); style.innerHTML = keyframes; document.head.appendChild(style);
+  }
+})();
+</script>
+</html>

@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ROMA RP — ER:LC Roblox RolePlay</title>
+  <meta name="description" content="ROMA RP · Server ER:LC su Roblox · N°1 in Italia. Unisciti su Discord e vivi un'esperienza RolePlay realistica ambientata in Italia." />
+  <!-- Collega il CSS generato: rinomina il file se necessario -->
+  <link rel="stylesheet" href="code.css" />
+  <link rel="icon" type="image/png" href="download.png" />
+</head>
+<body>
+  <!-- Nav -->
+  <header class="nav">
+    <div class="wrap container">
+  <a class="brand" href="#"><img src="download.png" alt="Logo Roma RP" class="logo-small"></a>
+  <button class="nav-toggle" aria-expanded="false" aria-label="Apri menu"> <span class="bar"></span> </button>
+  <nav class="links" aria-label="Primaria">
+  <a href="index.html" aria-current="page">Home</a>
+  <a href="chi-siamo.html">Chi Siamo</a>
+  <a href="roleplay.html">RolePlay</a>
+  <a href="negozio.html">Negozio</a>
+  <a href="contatti.html" class="cta">Contattaci</a>
+  <a id="nav-login-btn" class="btn nav-login" href="staff-login.html">Accedi</a>
+    </nav>
+    </div>
+  </header>
+  <script>
+    (function(){
+      const nav = document.querySelector('.nav');
+      const toggle = document.querySelector('.nav-toggle');
+      if(toggle){
+        toggle.addEventListener('click', function(){
+          const opened = nav.classList.toggle('nav-open');
+          toggle.setAttribute('aria-expanded', opened ? 'true' : 'false');
+        });
+      }
+      // show staff name pill if logged in
+      const staff = sessionStorage.getItem('rprp_staff');
+      if(staff){
+        const a = document.getElementById('nav-login-btn');
+        if(a){ a.textContent = staff; a.classList.add('profile'); a.href = 'staff-dashboard.html'; }
+      }
+    })();
+  </script>
+
+  <!-- Hero -->
+
+  <section id="home" class="hero animate-fadein">
+    <div class="container center" style="flex-direction:column;align-items:center;position:relative;overflow:visible;">
+      <h1 class="m0" style="margin-bottom:1.2rem;"><img src="download.png" alt="Logo Roma RP" class="logo-hero animate-fadein"></h1>
+      <p class="subtitle hero-subtitle animate-fadein" style="animation-delay:.08s;max-width:600px;">Server ER:LC su Roblox · N°1 in Italia <span class="dot" style="display:inline-block;width:10px;height:10px;background:var(--accent);border-radius:50%;margin:0 6px 0 6px;"></span> Entra su Discord e inizia la tua carriera nel RolePlay italiano.</p>
+      <div class="actions animate-fadein" style="animation-delay:.16s;gap:1.5rem;">
+        <div style="display:flex;justify-content:center;gap:1.5rem;width:100%;flex-wrap:wrap;">
+          <a class="btn primary btn-glow animate-scalein" style="animation-delay:.18s;" href="https://www.roblox.com/it/games/2534724415/Emergency-Response-Liberty-County">Gioca Ora</a>
+          <a class="btn outline btn-glow animate-scalein" style="animation-delay:.22s;" href="https://discord.gg/XBvYQG3U" target="_blank" rel="noopener">Unisciti al Discord</a>
+        </div>
+        <a class="trailer-img-link animate-scalein" style="animation-delay:.26s;" href="https://www.tiktok.com/@roma_rrp/video/7456791629735808278" target="_blank" rel="noopener"></a>
+      </div>
+      <div class="stats animate-fadein" style="animation-delay:.32s;">
+        <div class="stat animate-fadein" style="animation-delay:.34s;"><div class="value">5600+</div><div class="label">Membri su Discord</div></div>
+        <div class="stat animate-fadein" style="animation-delay:.36s;"><div class="value">39+</div><div class="label">Giocatori Connessi in Media</div></div>
+        <div class="stat animate-fadein" style="animation-delay:.38s;" role="region" aria-live="polite">
+          <div class="title" id="discord-online-title">Membri online Discord</div>
+          <div style="display: flex; align-items: center; gap: 0.5em;">
+            <span id="online-dot" class="online-dot"></span>
+            <div id="count" class="count">—</div>
+          </div>
+          <div id="last" class="note">ultimo aggiornamento: —</div>
+        </div>
+      </div>
+    </div>
+    <script>
+      // Animated gold/purple particles overlay (like staff login)
+      (function(){
+        const overlay = document.getElementById('particles-overlay');
+        if(!overlay) return;
+        const n = 22, colors = ['#f4c430','#6c5ce7','#fffbe6','#e73f3f'];
+        for(let i=0;i<n;i++){
+          const p = document.createElement('div');
+          p.style.position='absolute';
+          p.style.left = Math.random()*100+'%';
+          p.style.top = Math.random()*100+'%';
+          p.style.width = (8+Math.random()*16)+'px';
+          p.style.height = p.style.width;
+          p.style.borderRadius = '50%';
+          p.style.background = colors[Math.floor(Math.random()*colors.length)];
+          p.style.opacity = 0.13+Math.random()*0.18;
+          p.style.filter = 'blur('+(2+Math.random()*6)+'px)';
+          p.style.zIndex = 2;
+          p.style.animation = `floatP${i} ${(2.5+Math.random()*2.5).toFixed(2)}s ease-in-out infinite alternate`;
+          overlay.appendChild(p);
+          const keyframes = `@keyframes floatP${i}{0%{transform:translateY(0) scale(1);}100%{transform:translateY(${Math.random()>0.5?'-':'+'}${16+Math.random()*32}px) scale(${1+Math.random()*0.18});}}`;
+          const style = document.createElement('style'); style.innerHTML = keyframes; document.head.appendChild(style);
+        }
+      })();
+      const GUILD_ID = "1094540619625549845";
+      const WIDGET_URL = `https://discord.com/api/guilds/${GUILD_ID}/widget.json`;
+      async function updateCount(){
+        try{
+          const res = await fetch(WIDGET_URL, {cache: "no-store"});
+          if(!res.ok) throw new Error("Impossibile raggiungere il widget");
+          const data = await res.json();
+          const online = data.presence_count ?? data.approximate_presence_count ?? (data.members ? data.members.length : null);
+          document.getElementById('count').textContent = (online !== null) ? online : "Non disponibile";
+          document.getElementById('last').textContent = `ultimo aggiornamento: ${new Date().toLocaleTimeString()}`;
+          // Aggiorna anche il titolo se serve
+          const title = document.getElementById('discord-online-title');
+          if(title) title.textContent = 'Membri online Discord';
+        } catch(err) {
+          document.getElementById('count').textContent = "errore";
+          document.getElementById('last').textContent = `errore: ${err.message}`;
+        }
+      }
+      updateCount();
+      setInterval(updateCount, 30000);
+      // Demo cleanup: clears client-side demo data used by staff dashboard/reporting
+      document.getElementById('clear-demo-data').addEventListener('click', function(){
+        if(!confirm('Confermi la cancellazione dei dati demo (segnalazioni, comunicazioni ufficiali, log)? Questa azione non è reversibile.')) return;
+        try{
+          // localStorage keys
+          const keys = ['rprp_official_comm','rprp_reports','rprp_reports_archive','rprp_actions_log'];
+          keys.forEach(k=> localStorage.removeItem(k));
+          // sessionStorage keys
+          ['rprp_staff','rprp_staff_name','rprp_staff_role','rprp_staff_avatar','rprp_staff_list','rprp_last_deleted','rprp_last_deleted_batch'].forEach(k=> sessionStorage.removeItem(k));
+          alert('Dati demo cancellati con successo. Ricarica la pagina per aggiornare lo stato.');
+          console.info('Demo keys removed:', keys);
+        }catch(e){ console.error('Errore durante la cancellazione dati demo', e); alert('Errore durante la cancellazione. Vedi console per dettagli.'); }
+      });
+    </script>
+  </section>
+
+  <!-- Chi Siamo -->
+  <section id="chi-siamo" class="container chi-siamo-animated">
+    <div class="media-block">
+      <div class="video animate-fadein">
+        <h2 class="m0 chi-title animate-fadein">Chi Siamo</h2>
+        <p class="mt1 chi-desc animate-fadein" style="animation-delay:.08s;">ROMA RP è una community italiana su ER:LC (Roblox) focalizzata su realismo, regole chiare e divertimento. Siamo tra i server più attivi, con eventi settimanali e staff dedicato.</p>
+        <div class="mt2 grid-2 chi-cards">
+          <div class="chi-card animate-fadein" style="animation-delay:.16s;">
+            <span class="chi-icon icon-anim">🎯</span>
+            <div>
+              <div class="chi-label">La nostra Mission</div>
+              <div class="chi-desc2">Offrire un ambiente immersivo e competitivo nel rispetto del roleplay e dei giocatori.</div>
+            </div>
+          </div>
+          <div class="chi-card animate-fadein" style="animation-delay:.24s;">
+            <span class="chi-icon icon-anim">🤝</span>
+            <div>
+              <div class="chi-label">Community</div>
+              <div class="chi-desc2">Un server accogliente, moderato e orientato alla crescita dei membri, nuovi e veterani.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <aside class="aside join-why">
+        <h3 class="why-title">Perché unirti</h3>
+        <div class="why-cards">
+          <div class="why-card animate-fadein">
+            <span class="why-icon">🎉</span>
+            <div>
+              <div class="why-label">Eventi settimanali</div>
+              <div class="why-desc">e pattuglie strutturate</div>
+            </div>
+          </div>
+          <div class="why-card animate-fadein" style="animation-delay:.12s;">
+            <span class="why-icon">🏆</span>
+            <div>
+              <div class="why-label">Progressione ruoli</div>
+              <div class="why-desc">e gradi personalizzati</div>
+            </div>
+          </div>
+          <div class="why-card animate-fadein" style="animation-delay:.24s;">
+            <span class="why-icon">⚡</span>
+            <div>
+              <div class="why-label">Supporto rapido</div>
+              <div class="why-desc">tramite ticket dedicati</div>
+            </div>
+          </div>
+        </div>
+  <a class="btn primary mt2 animate-scalein" href="https://discord.gg/XBvYQG3U" target="_blank" rel="noopener">Unisciti ora</a>
+      </aside>
+    </div>
+  </section>
+
+  <!-- Feature cards (Crescita/Realismo/Divertimento) -->
+  <section class="container">
+    <div class="features features-animated">
+      <div class="feature-card animate-fadein">
+        <span class="feature-icon icon-anim">📈</span>
+        <div>
+          <div class="feature-label">Crescita Personale</div>
+          <div class="feature-desc">Migliora le tue abilità, avanza di grado e affronta nuove sfide in un ecosistema vivo.</div>
+        </div>
+      </div>
+      <div class="feature-card animate-fadein" style="animation-delay:.12s;">
+        <span class="feature-icon icon-anim">🏛️</span>
+        <div>
+          <div class="feature-label">Realismo</div>
+          <div class="feature-desc">Regole chiare e ambientazioni ispirate all'Italia per un'immersione totale in ER:LC.</div>
+        </div>
+      </div>
+      <div class="feature-card animate-fadein" style="animation-delay:.24s;">
+        <span class="feature-icon icon-anim">🎮</span>
+        <div>
+          <div class="feature-label">Divertimento</div>
+          <div class="feature-desc">Socializza, collabora e vivi momenti adrenalinici con una community attiva.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ruoli -->
+  <section id="roleplay" class="container">
+    <h2 class="m0">Scegli il tuo Ruolo</h2>
+    <p class="mt1" style="color:var(--muted)">Tre percorsi, infinite storie. Inizia subito la tua carriera.</p>
+    <div class="roles">
+      <article class="role role-card animate-fadein" style="animation-delay:.04s;">
+        <div class="role-icon icon-anim">🦹‍♂️</div>
+        <div class="media.criminale"><img src="IMG_9593.jpg" alt="Criminale"></div>
+        <div class="body">
+          <div class="role-label">Criminale</div>
+          <div class="role-desc">Organizza colpi, eludi la legge e lascia il segno nelle strade romane.</div>
+        </div>
+      </article>
+      <article class="role role-card animate-fadein" style="animation-delay:.12s;">
+        <div class="role-icon icon-anim">👮‍♂️</div>
+        <div class="media.forze"><img src="image.png" alt="Forze dell'Ordine"></div>
+        <div class="body">
+          <div class="role-label">Forze dell'Ordine</div>
+          <div class="role-desc">Difendi i cittadini, mantieni l'ordine e collabora con la tua squadra.</div>
+        </div>
+      </article>
+      <article class="role role-card animate-fadein" style="animation-delay:.20s;">
+        <div class="role-icon icon-anim">💼</div>
+        <div class="media imprenditore"><img src="ima1ge.png" alt="Imprenditore"></div>
+        <div class="body">
+          <div class="role-label">Imprenditore</div>
+          <div class="role-desc">Avvia attività, gestisci risorse e scala il mercato competitivo della città.</div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Negozio (placeholder) -->
+  <section id="negozio" class="container">
+    <!-- Sezione negozio rimossa dall'index, ora solo su negozio.html -->
+  </section>
+
+  <!-- Trailer / Media -->
+  <section id="trailer" class="container">
+    <div class="media-block">
+      <div class="video">
+        <h2 class="m0">Trailer Ufficiale</h2>
+        <p class="mt1" style="color:var(--muted)">Guarda un assaggio dell'azione su ROMA RP.</p>
+        <a class="trailer-img-link" href="https://www.youtube.com/watch?v=IQl-uX4y__c&t=8s" target="_blank" rel="noopener">
+          <img src="1d31448f-a33d-4567-9048-2c3c288d2a0b.png" alt="Guarda il Trailer ROMA RP V5" class="trailer-img" />
+        </a>
+      </div>
+      <aside class="aside">
+        <div class="community-card animate-fadein">
+          <h3 class="community-title">Unisciti alla Community</h3>
+          <div class="community-desc">Entra nel nostro Discord per regolamento, whitelist, ticket e novità.</div>
+          <div class="community-btns">
+            <a class="community-btn discord animate-fadein btn-glow" style="animation-delay:.08s;" id="discord" href="https://discord.gg/XBvYQG3U" target="_blank" rel="noopener"><span class="community-icon icon-anim">💬</span> Discord</a>
+            <a class="community-btn tiktok animate-fadein btn-glow" style="animation-delay:.16s;" href="https://www.tiktok.com/@roma_rrp?lang=it-IT" target="_blank" rel="noopener"><span class="community-icon icon-anim" aria-label="TikTok" style="display:inline-flex;align-items:center;vertical-align:middle;"><svg width="22" height="22" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;"><path d="M41.5 17.5c-4.5 0-8.5-3.5-8.5-8.5h-6.5v27.5c0 2.5-2 4.5-4.5 4.5s-4.5-2-4.5-4.5 2-4.5 4.5-4.5c.5 0 1 .1 1.5.3v-6.2c-.5-.1-1-.1-1.5-.1-6 0-10.5 4.5-10.5 10.5s4.5 10.5 10.5 10.5 10.5-4.5 10.5-10.5V22.7c2.3 1.5 5 2.3 8 2.3v-7.5z" fill="#25F4EE"/><path d="M41.5 17.5c-4.5 0-8.5-3.5-8.5-8.5h-3.5v27.5c0 2.5-2 4.5-4.5 4.5s-4.5-2-4.5-4.5 2-4.5 4.5-4.5c.5 0 1 .1 1.5.3v-6.2c-.5-.1-1-.1-1.5-.1-6 0-10.5 4.5-10.5 10.5s4.5 10.5 10.5 10.5 10.5-4.5 10.5-10.5V22.7c2.3 1.5 5 2.3 8 2.3v-7.5z" fill="#FE2C55"/><path d="M41.5 17.5c-4.5 0-8.5-3.5-8.5-8.5h-3.5v27.5c0 2.5-2 4.5-4.5 4.5s-4.5-2-4.5-4.5 2-4.5 4.5-4.5c.5 0 1 .1 1.5.3v-6.2c-.5-.1-1-.1-1.5-.1-6 0-10.5 4.5-10.5 10.5s4.5 10.5 10.5 10.5 10.5-4.5 10.5-10.5V22.7c2.3 1.5 5 2.3 8 2.3v-7.5z" fill="#fff"/></svg> TikTok</span></a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta container">
+    <div class="wrap">
+      <h2>Pronto a pattugliare le strade di ROMA RP?</h2>
+      <div>
+        <a class="btn primary" href="#join">Inizia Ora</a>
+        <a class="btn outline" href="#roleplay">Scopri i Ruoli</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contatti -->
+  <section id="contatti" class="container">
+    <h2 class="m0">Contattaci</h2>
+    <p class="mt1" style="color:var(--muted)">Hai domande? Scrivici e ti risponderemo presto.</p>
+    <form class="form mt2" onsubmit="event.preventDefault(); alert('Messaggio inviato! (demo)')">
+      <div class="grid-2">
+        <input class="input" type="text" placeholder="Nome" required />
+        <input class="input" type="email" placeholder="Email" required />
+      </div>
+      <textarea class="textarea" placeholder="Messaggio" required></textarea>
+      <button class="btn primary" type="submit">Invia</button>
+    </form>
+  </section>
+
+
+    <!-- Bottone Segnala e Modal (unico, stile coerente) -->
+    <button id="report-btn" class="report-btn" title="Segnala un problema o abuso" style="position:fixed;bottom:32px;right:32px;z-index:99999;background:var(--accent);color:#fff;border:none;border-radius:999px;padding:.7em 1.5em .7em 1.1em;min-width:64px;box-shadow:0 4px 24px 0 rgba(244,196,48,0.18),0 0 16px 2px #ffe08280; font-size:1.25rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5em;transition:background .2s,box-shadow .3s,transform .18s;outline:none;animation:bounceIn .7s cubic-bezier(.4,1.6,.4,1);">
+      <span aria-hidden="true" style="font-size:1.5em;margin-right:.3em;">⚠️</span>
+      <span style="font-size:1.1em;font-weight:700;letter-spacing:-.5px;">Segnala</span>
+      
+    <audio id="report-open-audio" src="https://cdn.pixabay.com/audio/2022/07/26/audio_124bfae3b2.mp3" preload="auto"></audio>
+    <div id="report-modal" class="modal-backdrop" style="display:none;align-items:center;justify-content:center;backdrop-filter:blur(2px);">
+      <div class="modal-content animated" role="dialog" aria-modal="true" aria-labelledby="report-title" style="max-width:420px;padding:2rem 2.2rem;box-shadow:0 8px 40px rgba(0,0,0,.25);border-radius:18px;background:#181818;">
+        <h3 id="report-title" style="margin-bottom:.5rem;font-size:1.35rem;">Segnala un problema</h3>
+        <div class="muted" style="margin-bottom:1.1rem;">Compila il modulo per inviare una segnalazione allo staff.<br><span style="font-size:.95em;">(Tutti i campi sono obbligatori)</span></div>
+        <div style="display:grid;gap:.7em;">
+          <input id="rep-name" class="input" type="text" maxlength="32" placeholder="Nome (opzionale)" style="width:100%;" />
+          <input id="rep-discord" class="input" type="text" maxlength="32" placeholder="Discord (opzionale, es. Nick#1234)" style="width:100%;" />
+          <select id="rep-type" class="input" required style="width:100%;">
+            <option value="">Tipo di segnalazione...</option>
+            <option value="bug">Bug</option>
+            <option value="abuso">Abuso</option>
+            <option value="altro">Altro</option>
+          </select>
+          <textarea id="rep-desc" class="input" required placeholder="Descrizione dettagliata" style="width:100%;min-height:90px;resize:vertical;"></textarea>
+          <div class="actions" style="margin-top:.7em;justify-content:flex-end;display:flex;gap:.7em;">
+            <button id="rep-cancel" class="btn outline" style="border-radius:8px;">Annulla</button>
+            <button id="rep-send" class="btn primary" style="border-radius:8px;font-size:1.13em;padding:.7em 0;">Invia Segnalazione</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <script>
+    // Animazione, tooltip e suono per bottone segnalazione
+    (function(){
+      const btn = document.getElementById('report-btn');
+      const tooltip = document.getElementById('report-tooltip');
+      if(btn) {
+        btn.style.zIndex = 99999;
+        btn.tabIndex = 0;
+        btn.addEventListener('focus', ()=> btn.style.boxShadow = '0 0 0 4px #ffe082');        btn.addEventListener('blur', ()=> btn.style.boxShadow = '0 4px 24px 0 rgba(244,196,48,0.18),0 0 16px 2px #ffe08280');
+        btn.addEventListener('mouseenter', ()=>{ if(tooltip) tooltip.style.opacity = 1; });
+        btn.addEventListener('mouseleave', ()=>{ if(tooltip) tooltip.style.opacity = 0; });
+      }
+    })();
+    // Sistema segnalazione moderno e uniforme
+    (function(){
+      const btn = document.getElementById('report-btn');
+      const modal = document.getElementById('report-modal');
+      const formName = document.getElementById('rep-name');
+      const formDiscord = document.getElementById('rep-discord');
+      const formType = document.getElementById('rep-type');
+      const formDesc = document.getElementById('rep-desc');
+      const cancelBtn = document.getElementById('rep-cancel');
+      const sendBtn = document.getElementById('rep-send');
+      let isOpen = false;
+      function openReport(){
+        if(isOpen) return;
+        isOpen = true;
+        modal.style.display = 'flex';
+        // animazione modal
+        const modalContent = modal.querySelector('.modal-content');
+        if(modalContent) {
+          modalContent.classList.remove('animated');
+          void modalContent.offsetWidth;
+          modalContent.classList.add('animated');
+        }
+        // suono
+        const audio = document.getElementById('report-open-audio');
+        if(audio) { audio.currentTime = 0; audio.play(); }
+        setTimeout(()=>{ formName.focus(); }, 100);
+      }
+      function closeReport(){
+        if(!isOpen) return;
+        isOpen = false;
+        modal.style.display = 'none';
+      }
+      btn.addEventListener('click', openReport);
+      cancelBtn.addEventListener('click', closeReport);
+      // invio
+      sendBtn.addEventListener('click', function(){
+        const name = formName.value.trim();
+        const discord = formDiscord.value.trim();
+        const type = formType.value;
+        const desc = formDesc.value.trim();
+        if(!type || !desc){ alert('Compila tutti i campi obbligatori.'); return; }
+        const id = 'rprp_' + Date.now() + '_' + Math.floor(Math.random()*10000);
+        const payload = { id, name, discord, type, desc, ts: Date.now(), source: window.location.pathname, read: false };
+        const key = 'rprp_reports';
+        const arr = JSON.parse(localStorage.getItem(key) || '[]'); arr.push(payload); localStorage.setItem(key, JSON.stringify(arr));
+        closeReport(); alert('Segnalazione inviata! Lo staff la vedrà nella dashboard.');
+        // reset form
+        formName.value = '';
+        formDiscord.value = '';
+        formType.value = '';
+        formDesc.value = '';
+      });
+      // Chiudi modal con ESC
+      document.addEventListener('keydown', function(e){
+        if(e.key === 'Escape') closeReport();
+      });
+      // Chiudi cliccando fuori
+      modal.addEventListener('click', function(e){
+        if(e.target === modal) closeReport();
+      });
+    })();
+  </script>
+
+  <footer class="footer">
+    <div class="container grid-3">
+      <div>
+        <strong>ROMA RP</strong>
+        <p class="mt1">ER:LC su Roblox — RolePlay italiano.</p>
+      </div>
+      <div>
+        <p class="m0">Link utili</p>
+        <ul>
+          <li><a href="#roleplay">Regolamento</a></li>
+          <li><a href="#negozio">Negozio</a></li>
+          <li><a href="#contatti">Supporto</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="m0">Social</p>
+        <ul>
+          <li><a href="https://discord.gg/XBvYQG3U" target="_blank" rel="noopener">Discord</a></li>
+          <li><a href="#">TikTok</a></li>
+          <li><a href="#">Instagram</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="container" style="margin-top:1rem; color:var(--muted)">© <span id="year"></span> ROMA RP. Tutti i diritti riservati.</div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+  <script>
+    // Sistema segnalazione (modal, salvataggio localStorage)
+    (function(){
+      const openBtn = document.getElementById('openReportBtn');
+      const modal = document.getElementById('reportModal');
+      const closeBtn = document.getElementById('closeReportBtn');
+      const form = document.getElementById('reportForm');
+      const successMsg = document.getElementById('reportSuccess');
+      if(!openBtn || !modal || !closeBtn || !form) return;
+      let isOpen = false;
+      function openReport(){
+        if(isOpen) return;
+        isOpen = true;
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        form.style.display = '';
+        successMsg.style.display = 'none';
+        form.reset();
+        // animazione modal
+        const modalContent = modal.querySelector('.modal-content');
+        if(modalContent) {
+          modalContent.classList.remove('animated');
+          void modalContent.offsetWidth;
+          modalContent.classList.add('animated');
+        }
+        // suono
+        const audio = document.getElementById('report-open-audio');
+        if(audio) { audio.currentTime = 0; audio.play(); }
+        setTimeout(()=>{ document.getElementById('reportType').focus(); }, 100);
+      }
+      function closeReport(){
+        if(!isOpen) return;
+        isOpen = false;
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+      }
+      openBtn.addEventListener('click', openReport);
+      closeBtn.addEventListener('click', closeReport);
+      modal.addEventListener('click', e => { if(e.target === modal) closeReport(); });
+      document.addEventListener('keydown', e => { if(isOpen && e.key==='Escape') closeReport(); });
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        const type = document.getElementById('reportType').value;
+        const desc = document.getElementById('reportDesc').value.trim();
+        const name = document.getElementById('reportName').value.trim();
+        const discord = document.getElementById('reportDiscord').value.trim();
+        if(!type || !desc) return;
+        // Salva in localStorage con formato uniforme
+        const id = 'rprp_' + Date.now() + '_' + Math.floor(Math.random()*10000);
+        const payload = {
+          id,
+          name,
+          discord,
+          type,
+          desc,
+          ts: Date.now(),
+          source: window.location.pathname,
+          read: false
+        };
+        const reports = JSON.parse(localStorage.getItem('rprp_reports')||'[]');
+        reports.push(payload);
+        localStorage.setItem('rprp_reports', JSON.stringify(reports));
+        form.style.display = 'none';
+        successMsg.style.display = '';
+        setTimeout(closeReport, 1800);
+      });
+    })();
+  </script>
+  <!-- Site announcement renderer (shows site-wide popup if published by staff) -->
+  <script>
+  (function(){
+    try{
+      function removeOverlay(){ const existing = document.getElementById('site-ann-overlay'); if(existing) existing.remove(); }
+
+      function renderSiteAnnouncement(ann){ try{
+        removeOverlay();
+        if(!ann || !ann.active) return;
+        if(ann.expiresAt && Date.now() > ann.expiresAt) return;
+        const dismissKey = 'rprp_site_announcement_dismissed_' + (ann.id || 'default');
+        if(sessionStorage.getItem(dismissKey)) return;
+        if(document.getElementById('site-ann-overlay')) return;
+        const overlay = document.createElement('div'); overlay.id = 'site-ann-overlay';
+        const card = document.createElement('div'); card.className = 'site-announcement';
+        const closeBtn = document.createElement('button'); closeBtn.className = 'close-btn'; closeBtn.innerHTML = '✕';
+        closeBtn.addEventListener('click', ()=>{ sessionStorage.setItem(dismissKey,'1'); overlay.remove(); });
+        const title = document.createElement('h3'); title.innerHTML = ann.title || 'Annuncio';
+        const body = document.createElement('div'); body.className = 'body'; body.innerHTML = ann.html || ann.text || '';
+        const actions = document.createElement('div'); actions.className = 'actions';
+        const ok = document.createElement('button'); ok.className = 'btn primary'; ok.textContent = 'Chiudi'; ok.addEventListener('click', ()=>{ sessionStorage.setItem(dismissKey,'1'); overlay.remove(); });
+        actions.appendChild(ok);
+        card.appendChild(closeBtn); card.appendChild(title); card.appendChild(body); card.appendChild(actions);
+        overlay.appendChild(card);
+        document.body.appendChild(overlay);
+        setTimeout(()=> overlay.classList.add('show'), 10);
+      }catch(e){ console.error('renderSiteAnnouncement failed', e); }}
+
+      function loadAndRender(){ try{ const raw = localStorage.getItem('rprp_site_announcement'); if(!raw){ removeOverlay(); return; } const ann = JSON.parse(raw); renderSiteAnnouncement(ann); }catch(e){ console.error('loadAndRender failed', e); } }
+
+      // initial
+      loadAndRender();
+
+      // react to storage updates from other tabs
+      window.addEventListener('storage', function(e){ if(e.key === 'rprp_site_announcement'){ try{ if(!e.newValue){ removeOverlay(); return; } const ann = JSON.parse(e.newValue); loadAndRender(); }catch(err){ console.error('storage listener error', err); } } });
+
+      // expose render function so other scripts (e.g. dashboard) can show immediately
+      window.renderSiteAnnouncement = function(ann){ try{ renderSiteAnnouncement(ann); }catch(e){} };
+
+    }catch(e){ console.error('Announcement render failed', e); }
+  })();
+  </script>
+  <!-- Sistema di segnalazione rimosso -->
+  <!-- Login moved to dedicated staff-login.html -->
+</body>
+</html>
