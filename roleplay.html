@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RolePlay - ROMA RP</title>
+  <link rel="stylesheet" href="code.css" />
+</head>
+<body>
+  <header class="nav">
+    <div class="wrap container">
+      <a class="brand" href="index.html"><img src="download.png" alt="Logo Roma RP" class="logo-small"></a>
+  <button class="nav-toggle" aria-expanded="false" aria-label="Apri menu"> <span class="bar"></span> </button>
+  <nav class="links" aria-label="Primaria">
+        <a href="index.html">Home</a>
+        <a href="chi-siamo.html">Chi Siamo</a>
+        <a href="roleplay.html" aria-current="page">RolePlay</a>
+        <a href="negozio.html">Negozio</a>
+  <a href="contatti.html" class="cta">Contattaci</a>
+  <a id="nav-login-btn" class="btn nav-login" href="staff-login.html">Accedi</a>
+      </nav>
+    </div>
+  </header>
+  <script>
+    (function(){
+      const nav = document.querySelector('.nav'); const toggle = document.querySelector('.nav-toggle');
+      if(toggle){ toggle.addEventListener('click', function(){ const opened = nav.classList.toggle('nav-open'); toggle.setAttribute('aria-expanded', opened ? 'true' : 'false'); }); }
+      const staff = sessionStorage.getItem('rprp_staff'); if(staff){ const a = document.getElementById('nav-login-btn'); if(a){ a.textContent = staff; a.classList.add('profile'); a.href = 'staff-dashboard.html'; } }
+    })();
+  </script>
+  <main class="container">
+        <!-- Bottone Segnala e Modal (unico, stile coerente) -->
+        <button id="report-btn" class="report-btn" title="Segnala un problema o abuso" style="position:fixed;bottom:32px;right:32px;z-index:99999;background:var(--accent);color:#fff;border:none;border-radius:999px;padding:.7em 1.5em .7em 1.1em;min-width:64px;box-shadow:0 4px 24px 0 rgba(244,196,48,0.18),0 0 16px 2px #ffe08280; font-size:1.25rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5em;transition:background .2s,box-shadow .3s,transform .18s;outline:none;animation:bounceIn .7s cubic-bezier(.4,1.6,.4,1);">
+          <span aria-hidden="true" style="font-size:1.5em;margin-right:.3em;">⚠️</span>
+          <span style="font-size:1.1em;font-weight:700;letter-spacing:-.5px;">Segnala</span>
+         
+        </button>
+        <audio id="report-open-audio" src="https://cdn.pixabay.com/audio/2022/07/26/audio_124bfae3b2.mp3" preload="auto"></audio>
+        <div id="report-modal" class="modal-backdrop" style="display:none;align-items:center;justify-content:center;backdrop-filter:blur(2px);">
+          <div class="modal-content animated" role="dialog" aria-modal="true" aria-labelledby="report-title" style="max-width:420px;padding:2rem 2.2rem;box-shadow:0 8px 40px rgba(0,0,0,.25);border-radius:18px;background:#181818;">
+            <h3 id="report-title" style="margin-bottom:.5rem;font-size:1.35rem;">Segnala un problema</h3>
+            <div class="muted" style="margin-bottom:1.1rem;">Compila il modulo per inviare una segnalazione allo staff.<br><span style="font-size:.95em;">(Tutti i campi sono obbligatori)</span></div>
+            <div style="display:grid;gap:.7em;">
+              <input id="rep-name" class="input" type="text" maxlength="32" placeholder="Nome (opzionale)" style="width:100%;" />
+              <input id="rep-discord" class="input" type="text" maxlength="32" placeholder="Discord (opzionale, es. Nick#1234)" style="width:100%;" />
+              <select id="rep-type" class="input" required style="width:100%;">
+                <option value="">Tipo di segnalazione...</option>
+                <option value="bug">Bug</option>
+                <option value="abuso">Abuso</option>
+                <option value="altro">Altro</option>
+              </select>
+              <textarea id="rep-desc" class="input" required placeholder="Descrizione dettagliata" style="width:100%;min-height:90px;resize:vertical;"></textarea>
+              <div class="actions" style="margin-top:.7em;justify-content:flex-end;display:flex;gap:.7em;">
+                <button id="rep-cancel" class="btn outline" style="border-radius:8px;">Annulla</button>
+                <button id="rep-send" class="btn primary" style="border-radius:8px;font-size:1.13em;padding:.7em 0;">Invia Segnalazione</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    <section class="roleplay-hero-new wow-hero" style="position:relative;overflow:visible;min-height:420px;display:flex;flex-direction:column;align-items:center;justify-content:center;margin-bottom:2.5rem;">
+      <div class="particles-overlay floating-particles"></div>
+      <div class="shop-hero-lights"></div>
+      <h1 class="roleplay-title-new wow-title" style="font-size:3.2rem;font-weight:900;letter-spacing:-2px;text-shadow:0 2px 48px #6c5ce7cc,0 1px 0 #fffbe6;animation:wowFadeIn 1.2s cubic-bezier(.4,1.6,.4,1);">Vivi il Roleplay come mai prima</h1>
+      <p class="roleplay-subtitle-new wow-subtitle" style="font-size:1.35rem;margin-top:.9rem;max-width:750px;text-align:center;animation:wowFadeInUp 1.5s .2s cubic-bezier(.4,1.6,.4,1) both;">Scegli il tuo percorso, immergiti in storie uniche e lascia il segno nel mondo di <span class="luxury-badge wow-badge">ROMA RP</span>.<br><span class="shop-badge animate-scalein wow-badge" style="margin-top:.7em;display:inline-block;">Scopri i ruoli disponibili</span></p>
+    </section>
+    <section class="roleplay-pass-layout" style="display:grid;grid-template-columns:1.5fr 1fr;gap:2.5rem;align-items:stretch;max-width:1200px;margin:0 auto 2.5rem auto;">
+      <div class="roleplay-main-card glass-card animate-scalein wow-card" id="mainRoleCard" style="min-height:420px;display:flex;flex-direction:column;justify-content:end;position:relative;overflow:hidden;transition:all .5s cubic-bezier(.4,1.6,.4,1);">
+        <img id="mainRoleImg" src="IMG_9593.jpg" alt="Criminale" style="width:100%;height:65%;object-fit:cover;object-position:center;border-radius:18px 18px 0 0;box-shadow:0 4px 24px #6c5ce744;transition:all .5s cubic-bezier(.4,1.6,.4,1);">
+        <div style="padding:1.5em 1.5em 1.2em 1.5em;">
+          <div id="mainRoleTitle" class="luxury-badge wow-badge-glow" style="margin-bottom:.5em;font-size:1.25em;">Criminale</div>
+          <div id="mainRoleDesc" style="color:var(--muted);font-size:1.1em;">Vivi nell'ombra, domina la città, affronta rischi e scegli la tua strada tra potere e pericolo.</div>
+        </div>
+      </div>
+      <div class="roleplay-side-cards" style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:1.2rem;">
+        <div class="roleplay-side-card glass-card wow-card" data-role="criminale" style="cursor:pointer;overflow:hidden;transition:all .4s;display:flex;flex-direction:column;justify-content:end;">
+          <img src="IMG_9593.jpg" alt="Criminale" style="width:100%;height:70%;object-fit:cover;object-position:center;">
+          <div class="luxury-badge wow-badge-glow" style="margin:0.7em 0 .7em 0;font-size:1em;">Criminale</div>
+        </div>
+        <div class="roleplay-side-card glass-card wow-card" data-role="imprenditore" style="cursor:pointer;overflow:hidden;transition:all .4s;display:flex;flex-direction:column;justify-content:end;">
+          <img src="ima1ge.png" alt="Imprenditore" style="width:100%;height:70%;object-fit:cover;object-position:center;">
+          <div class="luxury-badge wow-badge-glow" style="margin:0.7em 0 .7em 0;font-size:1em;">Imprenditore</div>
+        </div>
+        <div class="roleplay-side-card glass-card wow-card" data-role="forze" style="cursor:pointer;overflow:hidden;transition:all .4s;display:flex;flex-direction:column;justify-content:end;">
+          <img src="image.png" alt="Forze dell'Ordine" style="width:100%;height:70%;object-fit:cover;object-position:center;">
+          <div class="luxury-badge wow-badge-glow" style="margin:0.7em 0 .7em 0;font-size:1em;">Forze dell'Ordine</div>
+        </div>
+        <div class="roleplay-side-card glass-card wow-card" data-role="altro" style="cursor:pointer;overflow:hidden;transition:all .4s;display:flex;flex-direction:column;justify-content:end;">
+          <img src="download.png" alt="Altri Ruoli" style="width:100%;height:70%;object-fit:cover;object-position:center;">
+          <div class="luxury-badge wow-badge-glow" style="margin:0.7em 0 .7em 0;font-size:1em;">Altri Ruoli</div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <style>
+        /* WOW EFFECTS (Roleplay) */
+        .wow-hero { background: radial-gradient(ellipse at 60% 0,#f4c43022 0,#6c5ce711 60%,transparent 100%), linear-gradient(120deg,rgba(244,196,48,0.10),rgba(108,92,231,0.10),rgba(20,24,38,0.98)); }
+        .shop-hero-lights { position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;background:radial-gradient(circle at 30% 40%,#f4c43033 0,#f4c43011 80px,transparent 180px),radial-gradient(circle at 70% 60%,#6c5ce733 0,#6c5ce711 80px,transparent 180px);animation: wowLightsMove 8s linear infinite alternate;opacity:.7; }
+        @keyframes wowLightsMove { 0%{background-position:0 0,0 0;} 100%{background-position:40px 60px,-40px -60px;} }
+        .floating-particles { animation: wowParticlesFloat 12s linear infinite alternate; }
+        @keyframes wowParticlesFloat { 0%{transform:translateY(0);} 100%{transform:translateY(-18px);} }
+        .wow-title { animation: wowFadeIn 1.2s cubic-bezier(.4,1.6,.4,1); }
+        .wow-subtitle { animation: wowFadeInUp 1.5s .2s cubic-bezier(.4,1.6,.4,1) both; }
+        @keyframes wowFadeIn { from{opacity:0;transform:scale(.96);} to{opacity:1;transform:scale(1);} }
+        @keyframes wowFadeInUp { from{opacity:0;transform:translateY(32px);} to{opacity:1;transform:translateY(0);} }
+        .wow-badge { animation: wowBadgeGlow 2.2s infinite alternate cubic-bezier(.4,1.6,.4,1); }
+        @keyframes wowBadgeGlow { 0%{box-shadow:0 0 0 #f4c43000;} 100%{box-shadow:0 0 24px #f4c43088,0 0 12px #6c5ce788;} }
+        .wow-carousel { perspective: 1200px; }
+        .wow-card { transition: transform .35s cubic-bezier(.4,1.6,.4,1), box-shadow .22s; will-change: transform, box-shadow; position:relative; }
+        .wow-card:hover { transform: rotateY(8deg) scale(1.045) translateY(-8px); box-shadow:0 32px 80px 0 #f4c43055,0 8px 32px 0 #6c5ce7aa; z-index:2; }
+        .wow-card-glow { position:absolute;inset:0;pointer-events:none;z-index:1;border-radius:inherit;box-shadow:0 0 48px 8px #f4c43033,0 0 32px 4px #6c5ce733;opacity:0.7;transition:opacity .22s; }
+        .wow-card:hover .wow-card-glow { opacity:1; }
+        .wow-badge-glow { animation: wowBadgeGlow 2.2s infinite alternate cubic-bezier(.4,1.6,.4,1); }
+      </style>
+    </section>
+    <!-- ...existing code... -->
+    <script>
+      // Roleplay Pass Layout Logic
+      const roleData = [
+        {
+          key: 'criminale',
+          title: 'Criminale',
+          desc: `Vivi nell'ombra, domina la città, affronta rischi e scegli la tua strada tra potere e pericolo.`,
+          img: 'IMG_9593.jpg'
+        },
+        {
+          key: 'imprenditore',
+          title: 'Imprenditore',
+          desc: `Costruisci il tuo impero, crea opportunità e influenza il destino della città con le tue scelte.`,
+          img: 'ima1ge.png'
+        },
+        {
+          key: 'forze',
+          title: "Forze dell'Ordine",
+          desc: `Proteggi la città, collabora con la squadra e affronta ogni sfida con coraggio e disciplina.`,
+          img: 'image.png'
+        },
+        {
+          key: 'altro',
+          title: 'Altri Ruoli',
+          desc: `Scopri tanti altri ruoli e possibilità per creare la tua storia unica su ROMA RP!`,
+          img: 'download.png'
+        }
+      ];
+      let current = 0;
+      let autoRotate = true;
+      const mainImg = document.getElementById('mainRoleImg');
+      const mainTitle = document.getElementById('mainRoleTitle');
+      const mainDesc = document.getElementById('mainRoleDesc');
+      const sideCards = document.querySelectorAll('.roleplay-side-card');
+      function setMain(idx) {
+        const d = roleData[idx];
+        mainImg.src = d.img;
+        mainImg.alt = d.title;
+        mainTitle.textContent = d.title;
+        mainDesc.textContent = d.desc;
+        sideCards.forEach((c,i)=>{
+          c.classList.toggle('active',i===idx);
+        });
+        current = idx;
+      }
+      sideCards.forEach((card,i)=>{
+        card.addEventListener('click',()=>{
+          setMain(i);
+          autoRotate = false;
+        });
+      });
+      setMain(0);
+      setInterval(()=>{
+        if(autoRotate) setMain((current+1)%roleData.length);
+      },5000);
+    </script>
+  </main>
+  <script>
+    // Try to open modal on index if available, otherwise redirect to index
+    document.getElementById('nav-login-btn').addEventListener('click', function(){
+      if(window.openRomaLogin){ window.openRomaLogin(); } else { window.location.href = 'index.html#login'; }
+    });
+  </script>
+  <!-- Site announcement renderer (shows site-wide popup if published by staff) -->
+  <script>
+  (function(){
+    try{
+      function removeOverlay(){ const existing = document.getElementById('site-ann-overlay'); if(existing) existing.remove(); }
+      function renderSiteAnnouncement(ann){ try{
+        removeOverlay();
+        if(!ann || !ann.active) return;
+        if(ann.expiresAt && Date.now() > ann.expiresAt) return;
+        const dismissKey = 'rprp_site_announcement_dismissed_' + (ann.id || 'default');
+        if(sessionStorage.getItem(dismissKey)) return;
+        if(document.getElementById('site-ann-overlay')) return;
+        const overlay = document.createElement('div'); overlay.id = 'site-ann-overlay';
+        const card = document.createElement('div'); card.className = 'site-announcement';
+        const closeBtn = document.createElement('button'); closeBtn.className = 'close-btn'; closeBtn.innerHTML = '✕';
+        closeBtn.addEventListener('click', ()=>{ sessionStorage.setItem(dismissKey,'1'); overlay.remove(); });
+        const title = document.createElement('h3'); title.innerHTML = ann.title || 'Annuncio';
+        const body = document.createElement('div'); body.className = 'body'; body.innerHTML = ann.html || ann.text || '';
+        const actions = document.createElement('div'); actions.className = 'actions';
+        const ok = document.createElement('button'); ok.className = 'btn primary'; ok.textContent = 'Chiudi'; ok.addEventListener('click', ()=>{ sessionStorage.setItem(dismissKey,'1'); overlay.remove(); });
+        actions.appendChild(ok);
+        card.appendChild(closeBtn); card.appendChild(title); card.appendChild(body); card.appendChild(actions);
+        overlay.appendChild(card);
+        document.body.appendChild(overlay);
+        setTimeout(()=> overlay.classList.add('show'), 10);
+      }catch(e){ console.error('renderSiteAnnouncement failed', e); }}
+      function loadAndRender(){ try{ const raw = localStorage.getItem('rprp_site_announcement'); if(!raw){ removeOverlay(); return; } const ann = JSON.parse(raw); renderSiteAnnouncement(ann); }catch(e){ console.error('loadAndRender failed', e); } }
+      loadAndRender();
+      window.addEventListener('storage', function(e){ if(e.key === 'rprp_site_announcement'){ try{ if(!e.newValue){ removeOverlay(); return; } loadAndRender(); }catch(err){ console.error('storage listener error', err); } } });
+      window.renderSiteAnnouncement = function(ann){ try{ renderSiteAnnouncement(ann); }catch(e){} };
+    }catch(e){ console.error('Announcement render failed', e); }
+  })();
+  </script>
+
+  <script>
+    // Animazione, tooltip e suono per bottone segnalazione
+    (function(){
+      const btn = document.getElementById('report-btn');
+      const tooltip = document.getElementById('report-tooltip');
+      if(btn) {
+        btn.style.zIndex = 99999;
+        btn.tabIndex = 0;
+        btn.addEventListener('focus', ()=> btn.style.boxShadow = '0 0 0 4px #ffe082');
+        btn.addEventListener('blur', ()=> btn.style.boxShadow = '0 4px 24px 0 rgba(244,196,48,0.18),0 0 16px 2px #ffe08280');
+        btn.addEventListener('mouseenter', ()=>{ if(tooltip) tooltip.style.opacity = 1; });
+        btn.addEventListener('mouseleave', ()=>{ if(tooltip) tooltip.style.opacity = 0; });
+      }
+    })();
+    // Sistema segnalazione moderno e uniforme
+    (function(){
+      const btn = document.getElementById('report-btn');
+      const modal = document.getElementById('report-modal');
+      const formName = document.getElementById('rep-name');
+      const formDiscord = document.getElementById('rep-discord');
+      const formType = document.getElementById('rep-type');
+      const formDesc = document.getElementById('rep-desc');
+      const cancelBtn = document.getElementById('rep-cancel');
+      const sendBtn = document.getElementById('rep-send');
+      let isOpen = false;
+      function openReport(){
+        if(isOpen) return;
+        isOpen = true;
+        modal.style.display = 'flex';
+        // animazione modal
+        const modalContent = modal.querySelector('.modal-content');
+        if(modalContent) {
+          modalContent.classList.remove('animated');
+          void modalContent.offsetWidth;
+          modalContent.classList.add('animated');
+        }
+        // suono
+        const audio = document.getElementById('report-open-audio');
+        if(audio) { audio.currentTime = 0; audio.play(); }
+        setTimeout(()=>{ formName.focus(); }, 100);
+      }
+      function closeReport(){
+        if(!isOpen) return;
+        isOpen = false;
+        modal.style.display = 'none';
+      }
+      btn.addEventListener('click', openReport);
+      cancelBtn.addEventListener('click', closeReport);
+      // invio
+      sendBtn.addEventListener('click', function(){
+        const name = formName.value.trim();
+        const discord = formDiscord.value.trim();
+        const type = formType.value;
+        const desc = formDesc.value.trim();
+        if(!type || !desc){ alert('Compila tutti i campi obbligatori.'); return; }
+        const id = 'rprp_' + Date.now() + '_' + Math.floor(Math.random()*10000);
+        const payload = { id, name, discord, type, desc, ts: Date.now(), source: window.location.pathname, read: false };
+        const key = 'rprp_reports';
+        const arr = JSON.parse(localStorage.getItem(key) || '[]'); arr.push(payload); localStorage.setItem(key, JSON.stringify(arr));
+        closeReport(); alert('Segnalazione inviata! Lo staff la vedrà nella dashboard.');
+        // reset form
+        formName.value = '';
+        formDiscord.value = '';
+        formType.value = '';
+        formDesc.value = '';
+      });
+      // Chiudi modal con ESC
+      document.addEventListener('keydown', function(e){
+        if(e.key === 'Escape') closeReport();
+      });
+      // Chiudi cliccando fuori
+      modal.addEventListener('click', function(e){
+        if(e.target === modal) closeReport();
+      });
+    })();
+  </script>
+</body>
+</html>

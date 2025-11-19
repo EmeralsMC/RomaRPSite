@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Staff Dashboard - ROMA RP</title>
+  <link rel="stylesheet" href="code.css" />
+</head>
+<body>
+  <header class="nav">
+    <div class="wrap container">
+      <a class="brand" href="index.html"><img src="download.png" alt="Logo Roma RP" class="logo-small"></a>
+    <button class="nav-toggle" aria-expanded="false" aria-label="Apri menu"> <span class="bar"></span> </button>
+    <nav class="links" aria-label="Primaria">
+        <a href="index.html">Home</a>
+        <a href="chi-siamo.html">Chi Siamo</a>
+        <a href="roleplay.html">RolePlay</a>
+        <a href="negozio.html">Negozio</a>
+        <a href="contatti.html" class="cta">Contattaci</a>
+        <a id="nav-login-btn" class="btn nav-login" href="staff-login.html">Accedi</a>
+      </nav>
+      </div>
+    </header>
+    <script>
+      // Init nav and defer modal wiring until DOM is ready so elements exist
+      document.addEventListener('DOMContentLoaded', function(){
+        const nav = document.querySelector('.nav'); const toggle = document.querySelector('.nav-toggle');
+        if(toggle){ toggle.addEventListener('click', function(){ const opened = nav.classList.toggle('nav-open'); toggle.setAttribute('aria-expanded', opened ? 'true' : 'false'); }); }
+        const staff = sessionStorage.getItem('rprp_staff'); if(staff){ const a = document.getElementById('nav-login-btn'); if(a){ a.textContent = staff; a.classList.add('profile'); a.href = 'staff-dashboard.html'; } }
+
+        // Modal open/close handlers for announcement (similar to report modal)
+        const openBtn = document.getElementById('open-site-ann-drawer');
+        const modal = document.getElementById('site-ann-modal');
+        const closeBtn = document.getElementById('site-ann-modal-close');
+        function open(){ if(!modal) return; modal.style.display = 'flex'; modal.classList.add('show'); modal.setAttribute('aria-hidden','false'); const first = modal.querySelector('input,select,textarea,button'); if(first) first.focus(); }
+        function close(){ if(!modal) return; modal.classList.remove('show'); modal.style.display = 'none'; modal.setAttribute('aria-hidden','true'); }
+        if(openBtn) openBtn.addEventListener('click', open);
+        if(closeBtn) closeBtn.addEventListener('click', close);
+        if(modal) modal.addEventListener('click', function(e){ if(e.target === modal) close(); });
+      });
+    </script>
+  <main class="container" style="max-width:1100px;margin:2.4rem auto;">
+    <section class="animate-fadein">
+      <div id="particles-overlay" style="pointer-events:none;position:fixed;inset:0;z-index:2;"></div>
+      <div class="staff-header animate-fadein" style="display:flex;align-items:center;gap:1.2rem;margin-bottom:1.2rem;">
+        <div style="width:88px;height:88px;border-radius:24px;overflow:hidden;box-shadow:0 12px 40px rgba(108,92,231,0.18),0 2px 12px 0 rgba(244,196,48,0.18);border:2.5px solid color-mix(in oklab,var(--accent) 30%,#6c5ce7 70%);display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(244,196,48,0.13),rgba(108,92,231,0.10));">
+          <img id="staff-avatar" src="download.png" alt="Avatar Staff" style="width:70px;height:70px;border-radius:16px;object-fit:cover;box-shadow:0 2px 12px #6c5ce755;">
+        </div>
+        <div>
+          <div style="font-size:1.7rem;font-weight:900;color:var(--accent-3);letter-spacing:-1px;text-shadow:0 2px 12px #6c5ce755,0 1px 0 #fff1;" id="staff-name">—</div>
+          <div style="margin-top:.18rem;display:flex;align-items:center;gap:.5rem;">
+            <span id="staff-role" class="badge" style="font-size:1.08rem;margin-top:0;display:inline-flex;align-items:center;gap:.5rem;padding:.25rem .7rem;border-radius:14px;background:linear-gradient(90deg,rgba(244,196,48,0.10),rgba(108,92,231,0.13));color:var(--accent-3);font-weight:700;box-shadow:0 2px 8px #6c5ce744;">Staff <span class="mini-ico" style="font-size:1.1em;vertical-align:-2px;">👑</span></span>
+            <button id="perm-summary" class="btn ghost" style="font-size:.99rem;padding:.5rem 1rem;border-radius:12px;">📜 Permessi</button>
+          </div>
+        </div>
+        <div style="margin-left:auto;display:flex;gap:.7rem;align-items:center;">
+          <button id="staff-logout" class="btn outline" style="border-radius:12px;">Logout</button>
+        </div>
+      </div>
+      <div id="welcome-anim" class="animate-fadein" style="background:linear-gradient(90deg,rgba(244,196,48,0.12),rgba(108,92,231,0.10),rgba(20,24,38,0.98));border-radius:18px;padding:1.2rem 1.5rem;margin-bottom:1.4rem;box-shadow:0 8px 32px 0 rgba(244,196,48,0.10),0 2px 12px 0 rgba(108,92,231,0.10);font-weight:700;color:var(--text);font-size:1.18rem;display:none;letter-spacing:-.2px;">
+      </div>
+      <!-- Hero stats -->
+      <div class="grid-3 stats-grid" style="gap:1.3rem;margin-bottom:2.2rem;">
+        <div class="card stat-card animate-fadein stat-glow" style="padding:1.7rem 1.3rem;display:flex;flex-direction:column;gap:.8rem;align-items:flex-start;box-shadow:0 12px 40px 0 rgba(108,92,231,0.18),0 2px 12px 0 rgba(244,196,48,0.18);background:linear-gradient(120deg,rgba(244,196,48,0.13),rgba(108,92,231,0.10));border-radius:22px;border:2.5px solid color-mix(in oklab,var(--accent) 30%,#6c5ce7 70%);">
+          <div style="display:flex;align-items:center;gap:.7rem;">
+            <span class="mini-ico" style="font-size:2.1rem;filter:drop-shadow(0 2px 8px #6c5ce755);">🟢</span>
+            <span style="font-size:1.1rem;color:var(--muted);font-weight:700;">Membri online Discord</span>
+          </div>
+          <div id="stat-online" style="font-size:2.2rem;font-weight:900;color:var(--accent-3);letter-spacing:-1px;">--</div>
+          <div id="stat-online-note" style="font-size:.98rem;color:var(--muted);font-weight:500;">Aggiornamento in tempo reale (Discord)</div>
+        </div>
+        <div class="card stat-card animate-fadein stat-glow" style="padding:1.7rem 1.3rem;display:flex;flex-direction:column;gap:.8rem;align-items:flex-start;box-shadow:0 12px 40px 0 rgba(108,92,231,0.18),0 2px 12px 0 rgba(244,196,48,0.18);background:linear-gradient(120deg,rgba(244,196,48,0.13),rgba(108,92,231,0.10));border-radius:22px;border:2.5px solid color-mix(in oklab,var(--accent) 30%,#6c5ce7 70%);">
+          <div style="display:flex;align-items:center;gap:.7rem;">
+            <span class="mini-ico" style="font-size:2.1rem;filter:drop-shadow(0 2px 8px #f4c43055);">📨</span>
+            <span style="font-size:1.1rem;color:var(--muted);font-weight:700;">Segnalazioni inviate</span>
+            <span id="reports-count-badge" class="badge-animated" style="background:linear-gradient(90deg,var(--accent-3) 0%,var(--accent) 100%);color:#fff;border-radius:12px;padding:.18em .7em;font-size:1.1rem;margin-left:.7rem;box-shadow:0 2px 8px 0 rgba(244,196,48,0.18),0 1.5px 8px 0 #6c5ce744;font-weight:700;animation:pulseBadge 1.8s infinite alternate;filter:drop-shadow(0 0 8px #6c5ce755);backdrop-filter:blur(4px);">0</span>
+          </div>
+          <div id="stat-reports" style="font-size:2.2rem;font-weight:900;color:#f4c430;letter-spacing:-1px;">--</div>
+          <div style="font-size:.98rem;color:var(--muted);font-weight:500;">Numero segnalazioni attive</div>
+        </div>
+        <div class="card stat-card animate-fadein stat-glow" style="padding:1.7rem 1.3rem;display:flex;flex-direction:column;gap:.8rem;align-items:flex-start;box-shadow:0 12px 40px 0 rgba(108,92,231,0.18),0 2px 12px 0 rgba(244,196,48,0.18);background:linear-gradient(120deg,rgba(244,196,48,0.13),rgba(108,92,231,0.10));border-radius:22px;border:2.5px solid color-mix(in oklab,var(--accent) 30%,#6c5ce7 70%);min-width:220px;">
+          <div style="display:flex;align-items:center;gap:.7rem;">
+            <span class="mini-ico" style="font-size:2.1rem;filter:drop-shadow(0 2px 8px #6c5ce755);">👤</span>
+            <span style="font-size:1.1rem;color:var(--muted);font-weight:700;">Staff online</span>
+          </div>
+          <div id="stat-staff-online" style="font-size:2.2rem;font-weight:900;color:var(--accent-3);letter-spacing:-1px;">—</div>
+          <div id="staff-online-list" style="margin-top:.5rem;display:flex;gap:.7rem;flex-wrap:wrap;"></div>
+          <div style="font-size:.98rem;color:var(--muted);font-weight:500;">Staff loggati ora</div>
+        </div>
+      </div>
+    <style>
+    .mini-ico { animation: bounceIco 1.6s infinite alternate cubic-bezier(.4,1.6,.4,1); }
+    @keyframes bounceIco { 0%{transform:translateY(0);} 100%{transform:translateY(-4px) scale(1.13);} }
+    .stat-glow:hover { box-shadow:0 0 32px 8px #f4c430cc,0 2px 12px 0 #6c5ce7cc !important; border-color:var(--accent-3)!important; }
+    </style>
+      <script>
+      // Particelle oro/viola animate dashboard
+      (function(){
+        const overlay = document.getElementById('particles-overlay');
+        if(!overlay) return;
+        const n = 28, colors = ['#f4c430','#6c5ce7','#fffbe6','#e73f3f'];
+        for(let i=0;i<n;i++){
+          const p = document.createElement('div');
+          p.style.position='absolute';
+          p.style.left = Math.random()*100+'%';
+          p.style.top = Math.random()*100+'%';
+          p.style.width = (10+Math.random()*18)+'px';
+          p.style.height = p.style.width;
+          p.style.borderRadius = '50%';
+          p.style.background = colors[Math.floor(Math.random()*colors.length)];
+          p.style.opacity = 0.10+Math.random()*0.18;
+          p.style.filter = 'blur('+(2+Math.random()*7)+'px)';
+          p.style.zIndex = 2;
+          p.style.animation = `floatPD${i} ${(2.5+Math.random()*2.5).toFixed(2)}s ease-in-out infinite alternate`;
+          overlay.appendChild(p);
+          const keyframes = `@keyframes floatPD${i}{0%{transform:translateY(0) scale(1);}100%{transform:translateY(${Math.random()>0.5?'-':'+'}${18+Math.random()*38}px) scale(${1+Math.random()*0.18});}}`;
+          const style = document.createElement('style'); style.innerHTML = keyframes; document.head.appendChild(style);
+        }
+      })();
+      // Successo: glow animato sulle card statistiche
+      window.animateStatSuccess = function(){
+        document.querySelectorAll('.stat-glow').forEach(card=>{
+          card.animate([
+            {boxShadow:card.style.boxShadow},
+            {boxShadow:'0 0 32px 8px #f4c430cc,0 2px 12px 0 #6c5ce7cc'},
+            {boxShadow:card.style.boxShadow}
+          ],{duration:900,iterations:1});
+        });
+      };
+      </script>
+      <!-- Sistema di gestione segnalazioni rimosso -->
+      <!-- Gestione Segnalazioni Utenti -->
+      <section class="staff-box animate-fadein" style="grid-column:1/-1;margin-top:2.2rem;box-shadow:0 8px 32px 0 rgba(244,196,48,0.13);background:linear-gradient(120deg,rgba(244,196,48,0.09),rgba(20,24,38,0.98));border:1.5px solid var(--accent);">
+        <h3 style="font-size:2rem;letter-spacing:-1px;margin-bottom:.7rem;display:flex;align-items:center;gap:.7rem;">
+          <span style="font-size:2.1rem;">📋</span> Segnalazioni Utenti
+        </h3>
+        <div class="report-controls" style="display:flex;flex-wrap:wrap;gap:.7rem 1.2rem;align-items:center;margin-bottom:1.1rem;">
+          <input id="report-search" class="input" type="text" placeholder="Cerca per nome, discord o descrizione..." style="max-width:260px;" />
+          <select id="report-type-filter" class="input" style="max-width:180px;">
+            <option value="">Tutti i tipi</option>
+            <option value="bug">Bug</option>
+            <option value="abuso">Abuso</option>
+            <option value="altro">Altro</option>
+          </select>
+          <select id="report-sort" class="input" style="max-width:180px;">
+            <option value="desc">Più recenti</option>
+            <option value="asc">Meno recenti</option>
+          </select>
+          <button id="refresh-reports" class="btn outline">Aggiorna</button>
+          <button id="archive-all-reports" class="btn ghost">Archivia Tutto</button>
+          <button id="delete-all-reports" class="btn outline" style="color:#c0392b;border-color:#c0392b">Elimina Tutto</button>
+        </div>
+        <div id="reports-feed" style="margin-top:.2rem;transition:all .4s cubic-bezier(.4,1.6,.4,1);"></div>
+        <audio id="notif-sound" src="https://cdn.pixabay.com/audio/2022/07/26/audio_124bfae3b2.mp3" preload="auto"></audio>
+      </section>
+      <div style="margin-top:1.6rem;">
+  <div class="staff-boxes" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1.5rem;">
+          <section class="staff-box animate-fadein">
+            <h3>Linee Guida Staff</h3>
+            <ul class="muted">
+              <li>Rispetta sempre i membri e collabora con il team.</li>
+              <li>Gestisci i ticket e le richieste con professionalità.</li>
+              <!-- Segnalazione bug rimossa -->
+              <li>Mantieni la riservatezza sulle informazioni interne.</li>
+            </ul>
+          </section>
+          <section class="staff-box animate-fadein" style="animation-delay:.08s;">
+            <h3>Regolamento Staff</h3>
+            <ul class="muted">
+              <li>Non abusare dei permessi staff.</li>
+              <li>Segui le procedure per ban, warn e kick.</li>
+              <li>Evita favoritismi e comportamenti scorretti.</li>
+              <li>Consulta sempre il regolamento completo prima di agire.</li>
+            </ul>
+          </section>
+          <section class="staff-box animate-fadein" style="animation-delay:.16s;">
+            <h3>Comunicazioni Interne</h3>
+            <div id="official-comm-display" class="muted" style="background:linear-gradient(90deg,rgba(244,196,48,0.06),rgba(20,24,38,0.98));border-radius:10px;padding:1.1rem 1.3rem;margin-bottom:.7rem;box-shadow:0 2px 8px 0 rgba(244,196,48,0.08);font-size:1.08rem;min-height:60px;transition:background .22s;">
+              <div id="official-comm-preview">Nessuna comunicazione interna salvata.</div>
+            </div>
+            <div id="official-comm-meta" style="font-size:.9rem;color:var(--muted);margin-top:.6rem;"></div>
+            <div id="official-comm-actions" style="margin-top:.6rem;display:flex;gap:.6rem;justify-content:flex-end;align-items:center;">
+              <button id="edit-official-comm" class="btn outline">Modifica comunicazione</button>
+            </div>
+            <div id="official-comm-editor-wrap" style="display:none;margin-top:.6rem;">
+              <div style="display:flex;gap:.7rem;align-items:center;margin-bottom:.5rem;">
+                <textarea id="official-comm-editor" class="input" style="width:100%;min-height:90px;resize:vertical;" placeholder="Scrivi la comunicazione per lo staff..."></textarea>
+                <button id="save-official-comm" class="btn primary">Salva</button>
+                <button id="cancel-official-comm" class="btn ghost">Annulla</button>
+              </div>
+              <div style="font-size:.97rem;color:var(--muted);margin-bottom:.3rem;">Anteprima live:</div>
+              <div id="official-comm-live" style="background:linear-gradient(90deg,rgba(244,196,48,0.03),rgba(20,24,38,0.98));border-radius:8px;padding:.7rem 1rem;min-height:40px;color:var(--text);font-size:1.08rem;"></div>
+            </div>
+            <script>
+            // Comunicazioni staff: editor WYSIWYG semplice e anteprima live
+            (function(){
+              const display = document.getElementById('official-comm-preview');
+              const editBtn = document.getElementById('edit-official-comm');
+              const editorWrap = document.getElementById('official-comm-editor-wrap');
+              const editor = document.getElementById('official-comm-editor');
+              const live = document.getElementById('official-comm-live');
+              const saveBtn = document.getElementById('save-official-comm');
+              const cancelBtn = document.getElementById('cancel-official-comm');
+              // Carica comunicazione da localStorage
+              function loadComm(){
+                const comm = localStorage.getItem('rprp_official_comm') || '';
+                display.innerHTML = comm ? comm : 'Nessuna comunicazione interna salvata.';
+                editor.value = comm.replace(/<br\s*\/>/g, '\n');
+                live.innerHTML = comm ? comm : '<span style="color:var(--muted)">Nessuna comunicazione</span>';
+              }
+              // Salva comunicazione
+              function saveComm(){
+                const val = editor.value.trim().replace(/\n/g,'<br />');
+                localStorage.setItem('rprp_official_comm', val);
+                loadComm();
+                editorWrap.style.display = 'none';
+                showToast('Comunicazione aggiornata','success');
+              }
+              // Anteprima live
+              editor && editor.addEventListener('input', ()=>{
+                live.innerHTML = editor.value.trim().replace(/\n/g,'<br />') || '<span style="color:var(--muted)">Nessuna comunicazione</span>';
+              });
+              editBtn && editBtn.addEventListener('click', ()=>{
+                editorWrap.style.display = 'block';
+                loadComm();
+                setTimeout(()=>editor.focus(), 100);
+              });
+              saveBtn && saveBtn.addEventListener('click', saveComm);
+              cancelBtn && cancelBtn.addEventListener('click', ()=>{ editorWrap.style.display = 'none'; });
+              loadComm();
+            })();
+            </script>
+          </section>
+
+          <!-- Annuncio sito (staff) - ora accessibile tramite pannello a scomparsa -->
+          <section class="staff-box animate-fadein" style="animation-delay:.20s;">
+            <h3>Annuncio sito</h3>
+            <div style="margin-bottom:.6rem;color:var(--muted);">Gestisci gli annunci pubblici del sito. Usa il pannello per creare, modificare e pubblicare.</div>
+            <div style="display:flex;justify-content:flex-end;">
+              <button id="open-site-ann-drawer" class="btn outline">Apri pannello annuncio</button>
+            </div>
+          </section>
+
+          <!-- Annuncio modal: pannello annuncio -->
+          <div id="site-ann-modal" class="modal-backdrop" style="display:none;align-items:center;justify-content:center;" aria-hidden="true">
+            <div class="modal" role="dialog" aria-modal="true" style="max-width:720px;">
+              <h3 id="site-ann-modal-title">Pannello Annuncio</h3>
+              <div class="muted">Crea o modifica un annuncio che verrà mostrato a tutti gli utenti come popup.</div>
+              <div style="margin-top:.8rem;display:grid;gap:.6rem;">
+                <input id="site-ann-title" class="input" placeholder="Titolo annuncio (es. Manutenzione)" />
+                <select id="site-ann-type" class="input" style="max-width:240px;"><option value="info">Info</option><option value="warning">Avviso</option><option value="urgent">Urgente</option></select>
+                <textarea id="site-ann-text" class="input" placeholder="Testo annuncio (puoi usare HTML leggero)" style="min-height:140px;padding:8px"></textarea>
+                <div style="display:flex;gap:.6rem;align-items:center;">
+                  <input id="site-ann-duration" class="input" placeholder="Durata in minuti (0 = no scadenza)" style="max-width:180px;" />
+                  <label style="color:var(--muted);font-size:.95rem;">Durata (minuti)</label>
+                </div>
+              </div>
+              <div style="display:flex;justify-content:flex-end;gap:.6rem;margin-top:.8rem;">
+                <button id="save-site-ann" class="btn outline">Salva bozza</button>
+                <button id="publish-site-ann" class="btn primary" onclick="handlePublish()">Pubblica</button>
+                <button id="remove-site-ann" class="btn ghost">Rimuovi</button>
+              </div>
+              <div id="site-ann-preview" style="margin-top:.8rem;display:none;border-radius:10px;border:1px solid rgba(255,255,255,0.03);padding:.8rem;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);color:var(--text);"></div>
+              <div style="display:flex;justify-content:flex-end;margin-top:.8rem;gap:.6rem;"><button id="site-ann-modal-close" class="btn outline">Chiudi</button></div>
+            </div>
+          </div>
+          <section class="staff-box animate-fadein" style="animation-delay:.24s;">
+            <h3>Risorse Utili</h3>
+            <ul class="muted">
+              <li><a href="#" target="_blank">Manuale Staff (PDF)</a></li>
+              <!-- Modulo segnalazione bug rimosso -->
+              <li><a href="#" target="_blank">Contatti amministrazione</a></li>
+            </ul>
+          </section>
+          <section class="staff-box animate-fadein" style="animation-delay:.32s;">
+            <h3>Strumenti Rapidi</h3>
+            <ul class="muted">
+              <li><button class="btn outline" onclick="showNotif('Ticket ricevuto!','Hai ricevuto un nuovo ticket da un utente.','info')">Simula Ticket</button></li>
+              <!-- Simula Bug rimosso -->
+              <li><button class="btn outline" onclick="showNotif('Aggiornamento','Nuove funzioni disponibili!','success')">Simula Update</button></li>
+            </ul>
+          </section>
+          <section class="staff-box animate-fadein" style="animation-delay:.4s;">
+            <h3>Permessi del tuo ruolo</h3>
+            <div id="role-perms" style="font-size:1rem;color:var(--muted);"></div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+    <!-- Segnalazioni da Contattaci -->
+    <section class="glass-card animate-scalein" style="max-width:900px;margin:3.5rem auto 2.5rem auto;padding:2.2rem 2.5rem 2.2rem 2.2rem;box-shadow:0 16px 48px 0 rgba(244,196,48,0.10),0 2px 12px 0 rgba(108,92,231,0.10);border-radius:28px;text-align:center;">
+      <div style="font-size:2.1rem;margin-bottom:1rem;">📩</div>
+      <div class="luxury-badge wow-badge-glow" style="font-size:1.18em;font-weight:800;margin-bottom:1.2em;">Segnalazioni da Contattaci</div>
+      <div id="contact-reports-list" style="margin-top:1.2em;text-align:left;"></div>
+      <script>
+        function renderContactReports(){
+          var key = 'rprp_reports';
+          var arr = JSON.parse(localStorage.getItem(key) || '[]');
+          if(!arr.length){ document.getElementById('contact-reports-list').innerHTML = '<div style="color:var(--muted);text-align:center;">Nessuna segnalazione ricevuta.</div>'; return; }
+          arr = arr.filter(r => r.source === 'contatti');
+          if(!arr.length){ document.getElementById('contact-reports-list').innerHTML = '<div style="color:var(--muted);text-align:center;">Nessuna segnalazione ricevuta.</div>'; return; }
+          arr.sort((a,b)=>b.ts-a.ts);
+          var html = arr.map(r => `
+            <div class="glass-card" style="margin-bottom:1.2em;padding:1.2em 1.5em;border-radius:18px;box-shadow:0 2px 12px #6c5ce733;">
+              <div style="font-size:1.08em;font-weight:700;color:var(--accent-3);margin-bottom:.3em;">${r.name || '—'} <span style="color:var(--muted);font-weight:400;font-size:.98em;">(${r.email || '—'})</span></div>
+              <div style="color:var(--text);margin-bottom:.5em;white-space:pre-line;">${r.msg.replace(/</g,'&lt;')}</div>
+              <div style="font-size:.97em;color:var(--muted);">${new Date(r.ts).toLocaleString()}</div>
+            </div>
+          `).join('');
+          document.getElementById('contact-reports-list').innerHTML = html;
+        }
+        renderContactReports();
+        window.addEventListener('storage', function(e){ if(e.key==='rprp_reports') renderContactReports(); });
+      </script>
+    </section>
+  <script>
+      const staff = sessionStorage.getItem('rprp_staff');
+      // --- Gestione Segnalazioni Utenti ---
+      // Notifica toast animata
+      function showToast(msg, type = 'info') {
+        let toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.style = 'position:fixed;bottom:32px;right:32px;z-index:9999;background:linear-gradient(90deg,var(--accent),#222);color:#fff;padding:1.1em 2em;border-radius:16px;box-shadow:0 4px 24px 0 rgba(244,196,48,0.18);font-size:1.15rem;opacity:0;transform:translateY(40px);transition:all .5s cubic-bezier(.4,1.6,.4,1);pointer-events:none;';
+        toast.innerHTML = `<span style="font-size:1.3em;margin-right:.7em;">${type==='success'?'✅':type==='error'?'❌':type==='warning'?'⚠️':'ℹ️'}</span> ${msg}`;
+        document.body.appendChild(toast);
+        setTimeout(()=>{ toast.style.opacity = 1; toast.style.transform = 'translateY(0)'; }, 50);
+        setTimeout(()=>{ toast.style.opacity = 0; toast.style.transform = 'translateY(40px)'; setTimeout(()=>toast.remove(), 600); }, 2600);
+      }
+
+      // Suono notifica
+      function playNotifSound() {
+        const audio = document.getElementById('notif-sound');
+        if(audio) { audio.currentTime = 0; audio.play(); }
+      }
+
+      function renderReportsFeed() {
+        const feed = document.getElementById('reports-feed');
+        const statReports = document.getElementById('stat-reports');
+        if (!feed) return;
+        let reports = [];
+        try { reports = JSON.parse(localStorage.getItem('rprp_reports') || '[]'); } catch(e) { reports = []; }
+        // Filtri e ricerca
+        const search = (document.getElementById('report-search')?.value || '').toLowerCase();
+        const typeFilter = document.getElementById('report-type-filter')?.value || '';
+        const sort = document.getElementById('report-sort')?.value || 'desc';
+        let filtered = reports.filter(r => {
+          let match = true;
+          if (search) {
+            match = (r.name && r.name.toLowerCase().includes(search)) || (r.discord && r.discord.toLowerCase().includes(search)) || (r.desc && r.desc.toLowerCase().includes(search));
+          }
+          if (typeFilter && r.type !== typeFilter) match = false;
+          return match;
+        });
+        filtered.sort((a, b) => sort === 'desc' ? (b.ts - a.ts) : (a.ts - b.ts));
+        if (statReports) statReports.textContent = filtered.length;
+        if (!filtered.length) {
+          feed.innerHTML = '<div class="muted" style="font-size:1.2rem;opacity:.7;">Nessuna segnalazione trovata.</div>';
+          if (statReports) statReports.textContent = '0';
+          return;
+        }
+        feed.innerHTML = filtered.map((r, i) => `
+          <div class="report-card animate-fadein" style="background:linear-gradient(120deg,rgba(244,196,48,0.13),rgba(20,24,38,0.98));border-radius:16px;padding:1.3rem 1.5rem;margin-bottom:1.2rem;box-shadow:0 4px 18px 0 rgba(244,196,48,0.10);display:flex;flex-direction:column;gap:.7rem;position:relative;overflow:hidden;transition:box-shadow .3s;">
+            <div style="display:flex;align-items:center;gap:.9rem;flex-wrap:wrap;">
+              <span style="font-size:1.6rem;">⚠️</span>
+              <span style="font-weight:800;font-size:1.15rem;letter-spacing:-.5px;">${r.type || '—'}</span>
+              <span style="background:#fff2c7;color:#b68900;border-radius:8px;padding:.13em .7em;font-size:.98rem;margin-left:.7rem;box-shadow:0 1px 4px 0 rgba(244,196,48,0.10);font-weight:700;">${r.page ? r.page.replace('.html','') : '—'}</span>
+              <span style="color:var(--muted);font-size:.98rem;">${r.name ? 'da ' + r.name : ''}</span>
+              <span style="color:var(--muted);font-size:.98rem;margin-left:auto;">${r.ts ? new Date(r.ts).toLocaleString() : ''}</span>
+              ${!r.read ? '<span class="badge-animated" style="background:#27ae60;color:#fff;border-radius:8px;padding:.13em .7em;font-size:.98rem;margin-left:.7rem;box-shadow:0 1px 4px 0 #27ae6044;font-weight:700;animation:pulseBadge 1.2s infinite alternate;">NUOVO</span>' : ''}
+              <span style="background:#f4c430;color:#181818;border-radius:8px;padding:.13em .7em;font-size:.98rem;margin-left:.7rem;box-shadow:0 1px 4px 0 #f4c43044;font-weight:700;">${r.read ? 'Letta' : 'Non letta'}</span>
+            </div>
+            <div style="margin:.3rem 0 .2rem 2.5rem;color:var(--text);white-space:pre-line;font-size:1.13rem;">${r.desc ? r.desc.replace(/</g,'&lt;').replace(/>/g,'&gt;') : ''}</div>
+            <div style="margin-left:2.5rem;color:var(--muted);font-size:.97rem;">Pagina: <b>${r.page || '—'}</b></div>
+            <div style="display:flex;gap:.7rem;margin-left:2.5rem;margin-top:.3rem;flex-wrap:wrap;">
+              <button class="btn ghost archive-report" data-idx="${i}" style="transition:background .2s;">Archivia</button>
+              <button class="btn outline delete-report" data-idx="${i}" style="color:#c0392b;border-color:#c0392b;transition:background .2s;">Elimina</button>
+            </div>
+          </div>
+        `).join('');
+        // Sezione staff online (demo: mostra solo l'utente loggato)
+        function renderStaffOnline() {
+          const staffList = document.getElementById('staff-online-list');
+          const statStaff = document.getElementById('stat-staff-online');
+          const staffName = sessionStorage.getItem('rprp_staff_name') || 'Staff';
+          const staffRole = sessionStorage.getItem('rprp_staff_role') || 'Staff';
+          const staffAvatar = sessionStorage.getItem('rprp_staff_avatar') || 'download.png';
+          // Always show only the current staff member (demo)
+          const onlineStaff = [{ name: staffName, role: staffRole, avatar: staffAvatar }];
+          staffList.innerHTML = onlineStaff.map(s => `
+            <div style="display:flex;align-items:center;gap:.5rem;background:rgba(244,196,48,0.08);border-radius:10px;padding:.4rem 1rem;min-width:170px;">
+              <img src="${s.avatar}" alt="avatar" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid var(--accent);box-shadow:0 2px 8px #f4c43033;">
+              <div><div style="font-weight:700;color:var(--accent);font-size:1.08rem;">${s.name}</div><div style="font-size:.97rem;color:var(--muted);">${s.role}</div></div>
+            </div>
+          `).join('');
+          statStaff.textContent = onlineStaff.length;
+        }
+        renderStaffOnline();
+        // Animazione fade-in
+        feed.querySelectorAll('.report-card').forEach(card => {
+          card.style.opacity = 0;
+          setTimeout(()=>{ card.style.transition = 'opacity .7s cubic-bezier(.4,1.6,.4,1)'; card.style.opacity = 1; }, 80);
+        });
+        // Attach actions
+        feed.querySelectorAll('.archive-report').forEach(btn => btn.addEventListener('click', function() {
+          const idx = +this.dataset.idx;
+          if (!confirm('Archiviare questa segnalazione?')) return;
+          let reports = JSON.parse(localStorage.getItem('rprp_reports') || '[]');
+          const archived = reports.splice(idx, 1)[0];
+          let arch = [];
+          try { arch = JSON.parse(localStorage.getItem('rprp_reports_archive') || '[]'); } catch(e) { arch = []; }
+          arch.unshift(archived);
+          localStorage.setItem('rprp_reports', JSON.stringify(reports));
+          localStorage.setItem('rprp_reports_archive', JSON.stringify(arch));
+          renderReportsFeed();
+          playNotifSound();
+          showToast('Segnalazione archiviata','success');
+        }));
+        feed.querySelectorAll('.delete-report').forEach(btn => btn.addEventListener('click', function() {
+          const idx = +this.dataset.idx;
+          if (!confirm('Eliminare definitivamente questa segnalazione?')) return;
+          let reports = JSON.parse(localStorage.getItem('rprp_reports') || '[]');
+          reports.splice(idx, 1);
+          localStorage.setItem('rprp_reports', JSON.stringify(reports));
+          renderReportsFeed();
+          playNotifSound();
+          showToast('Segnalazione eliminata','warning');
+        }));
+      }
+      document.addEventListener('DOMContentLoaded', function() {
+        renderReportsFeed();
+        const refreshBtn = document.getElementById('refresh-reports');
+        const archiveAllBtn = document.getElementById('archive-all-reports');
+        const deleteAllBtn = document.getElementById('delete-all-reports');
+        const searchInput = document.getElementById('report-search');
+        const typeFilter = document.getElementById('report-type-filter');
+        const sortSelect = document.getElementById('report-sort');
+        if (refreshBtn) refreshBtn.addEventListener('click', function(){
+          renderReportsFeed();
+          showToast('Feed aggiornato','info');
+          playNotifSound();
+        });
+        if (archiveAllBtn) archiveAllBtn.addEventListener('click', function() {
+          if (!confirm('Archiviare tutte le segnalazioni?')) return;
+          let reports = JSON.parse(localStorage.getItem('rprp_reports') || '[]');
+          let arch = [];
+          try { arch = JSON.parse(localStorage.getItem('rprp_reports_archive') || '[]'); } catch(e) { arch = []; }
+          arch = reports.concat(arch);
+          localStorage.setItem('rprp_reports', '[]');
+          localStorage.setItem('rprp_reports_archive', JSON.stringify(arch));
+          renderReportsFeed();
+          playNotifSound();
+          showToast('Tutte le segnalazioni archiviate','success');
+        });
+        if (deleteAllBtn) deleteAllBtn.addEventListener('click', function() {
+          try {
+            if (!confirm('Eliminare tutte le segnalazioni?')) return;
+            localStorage.setItem('rprp_reports', '[]');
+            renderReportsFeed();
+            playNotifSound();
+            showToast('Tutte le segnalazioni eliminate','warning');
+          } catch(e) {
+            showToast('Errore: impossibile eliminare tutte le segnalazioni','error');
+            console.error('Errore eliminazione segnalazioni:', e);
+          }
+        });
+        // Fix: re-bind delete buttons after ogni render
+        const observer = new MutationObserver(()=>{
+          document.querySelectorAll('.delete-report').forEach(btn => {
+            btn.onclick = function() {
+              try {
+                const idx = +this.dataset.idx;
+                if (!confirm('Eliminare definitivamente questa segnalazione?')) return;
+                let reports = JSON.parse(localStorage.getItem('rprp_reports') || '[]');
+                reports.splice(idx, 1);
+                localStorage.setItem('rprp_reports', JSON.stringify(reports));
+                renderReportsFeed();
+                playNotifSound();
+                showToast('Segnalazione eliminata','warning');
+              } catch(e) {
+                showToast('Errore: impossibile eliminare la segnalazione','error');
+                console.error('Errore eliminazione singola segnalazione:', e);
+              }
+            }
+          });
+        });
+        observer.observe(document.getElementById('reports-feed'), {childList:true,subtree:true});
+        if (searchInput) searchInput.addEventListener('input', renderReportsFeed);
+        if (typeFilter) typeFilter.addEventListener('change', renderReportsFeed);
+        if (sortSelect) sortSelect.addEventListener('change', renderReportsFeed);
+        // Aggiorna anche su storage event (altre tab)
+        window.addEventListener('storage', function(e){ if(e.key === 'rprp_reports'){ renderReportsFeed(); } });
+      });
+      // Discord online members update
+      const GUILD_ID = "1094540619625549845";
+      const WIDGET_URL = `https://discord.com/api/guilds/${GUILD_ID}/widget.json`;
+      async function updateDiscordOnline(){
+        try{
+          const res = await fetch(WIDGET_URL, {cache: "no-store"});
+          if(!res.ok) throw new Error("Impossibile raggiungere il widget Discord");
+          const data = await res.json();
+          const online = data.presence_count ?? data.approximate_presence_count ?? (data.members ? data.members.length : null);
+          document.getElementById('stat-online').textContent = (online !== null) ? online : "Non disponibile";
+          document.getElementById('stat-online-note').textContent = `Aggiornamento: ${new Date().toLocaleTimeString()}`;
+        } catch(err) {
+          document.getElementById('stat-online').textContent = "errore";
+          document.getElementById('stat-online-note').textContent = `errore: ${err.message}`;
+        }
+      }
+      updateDiscordOnline();
+      setInterval(updateDiscordOnline, 30000);
+      const staffName = sessionStorage.getItem('rprp_staff_name') || staff || '—';
+      const staffRole = sessionStorage.getItem('rprp_staff_role') || 'Staff';
+      const staffAvatar = sessionStorage.getItem('rprp_staff_avatar') || 'download.png';
+      if(!staff){ window.location.href = 'staff-login.html'; }
+
+      document.getElementById('staff-name').textContent = staffName;
+      document.getElementById('staff-role').textContent = staffRole;
+      document.getElementById('staff-avatar').src = staffAvatar;
+
+      // Animazione di benvenuto
+      const welcome = document.getElementById('welcome-anim');
+      welcome.innerHTML = `Bentornato, <strong style="color:var(--accent)">${staffName}</strong> — ruolo: <em>${staffRole}</em>.`;
+      welcome.style.display = 'block';
+
+      // Render role-specific permissions
+      function renderPerms(role){
+        const perms = {
+          'Fondatore': [['⭐','Accesso totale al pannello amministrativo'], ['🔧','Gestione plugin e server'], ['🧾','Visualizza log completi']],
+          'Moderatore': [['🛡️','Moderazione chat e gestione segnalazioni'], ['🔇','Sospensione/ban temporanei'], ['📩','Gestione ticket']],
+          'Amministrazione': [['🧭','Gestione ruoli e permessi'], ['📊','Accesso statistiche'], ['📌','Comunicazioni ufficiali']],
+          'Sviluppatore': [['💻','Accesso strumenti tecnici'], ['🐞','Segnalazione/fix bug'], ['⚙️','Deploy demo']],
+          'Supporto': [['📞','Risposta ticket'], ['🔍','Analisi problemi'], ['🗂️','Documentazione utenti']]
+        };
+        return perms[role] || [['ℹ️','Accesso staff di base']];
+      }
+
+      const permsList = renderPerms(staffRole);
+      const permsEl = document.getElementById('role-perms');
+      permsEl.innerHTML = permsList.map(p=>`<div style="margin-bottom:.5rem"><strong style="margin-right:.6rem">${p[0]}</strong>${p[1]}</div>`).join('');
+
+          // Logout handler;
+          document.getElementById('reply-cancel').addEventListener('click', ()=>{ modal.remove(); });
+          document.getElementById('rep-close').addEventListener('click', ()=>{ modal.remove(); });
+          // modal tag handlers
+          try{
+            const addBtn = document.getElementById('add-tag-btn'); const input = document.getElementById('new-tag-input');
+            addBtn.addEventListener('click', ()=>{ const t = input.value.trim(); if(!t) return; addTagToReport(r.id, t); });
+            // remove tag when clicking the x inside chip
+            modal.querySelectorAll('#modal-tags .tag-chip').forEach(ch=> ch.addEventListener('click', function(e){ const tag = this.dataset.tag; if(!tag) return; if(!confirm('Rimuovere tag "'+tag+'"?')) return; removeTagFromReport(r.id, tag); }));
+          }catch(e){ }
+        
+
+        // Event delegation for feed actions (open, mark-read, pin, assign, reply)
+        feedEl.addEventListener('click', function(e){
+          const openBtn = e.target.closest('.open-report');
+          const markBtn = e.target.closest('.mark-read');
+          const pinBtn = e.target.closest('.pin-report');
+          const assignBtn = e.target.closest('.assign-report');
+          const replyBtn = e.target.closest('.reply-report');
+          if(openBtn){ openReportDetail(openBtn.dataset.id); }
+          if(markBtn){ const id = markBtn.dataset.id; const arr = loadReports(); const idx = arr.findIndex(x=>x.id===id); if(idx>-1){
+              // archive the deleted report instead of permanently removing
+              const deleted = arr.splice(idx,1)[0];
+              saveReports(arr);
+              try{ const archRaw = localStorage.getItem('rprp_reports_archive') || '[]'; const arch = JSON.parse(archRaw); arch.unshift(deleted); localStorage.setItem('rprp_reports_archive', JSON.stringify(arch)); sessionStorage.setItem('rprp_last_deleted', JSON.stringify(deleted)); }catch(e){ console.error(e); }
+              renderReports();
+              showNotif('Segnalazione archiviata','Segnalazione rimossa e archiviata.','success','Annulla', ()=>{
+                // undo: restore last deleted by id
+                try{
+                  const last = JSON.parse(sessionStorage.getItem('rprp_last_deleted') || 'null');
+                  if(!last) return;
+                  // remove from archive
+                  const arch = JSON.parse(localStorage.getItem('rprp_reports_archive') || '[]');
+                  const aid = arch.findIndex(x=>x.id===last.id);
+                  if(aid>-1) arch.splice(aid,1);
+                  localStorage.setItem('rprp_reports_archive', JSON.stringify(arch));
+                  const cur = loadReports(); cur.unshift(last); saveReports(cur); renderReports(); sessionStorage.removeItem('rprp_last_deleted'); showNotif('Ripristinata','Segnalazione ripristinata.', 'success');
+                }catch(e){ console.error(e); }
+              });
+          } }
+          if(pinBtn){ const id = pinBtn.dataset.id; const arr = loadReports(); const it = arr.find(x=>x.id===id); if(it){ it.pinned = !it.pinned; saveReports(arr); renderReports(); pushActionLog('pin-toggle',{ id: it.id, pinned: it.pinned }); showNotif(it.pinned? 'Pinned':'Unpinned','Aggiornamento pin.', 'info'); } }
+          if(assignBtn){ const id = assignBtn.dataset.id; const arr = loadReports(); const it = arr.find(x=>x.id===id); if(it){ const who = prompt('Assegna a (nome):'); if(who){ it.assigned = who; saveReports(arr); renderReports(); pushActionLog('assign',{ id: it.id, assigned: who }); showNotif('Assegnato', `Assegnato a ${who}`, 'success'); } } }
+          if(replyBtn){ const id = replyBtn.dataset.id; openReportDetail(id); }
+        });
+
+  // mark all read -> delete all
+  document.getElementById('mark-all-read').addEventListener('click', function(){ if(!confirm('Sei sicuro? Tutte le segnalazioni verranno archiviate (lette).')) return; const arr = loadReports(); if(arr.length===0){ showNotif('Nessuna segnalazione','Non c\'è nulla da archiviare.','warning'); return; }
+      try{
+        const arch = JSON.parse(localStorage.getItem('rprp_reports_archive')||'[]'); const combined = arr.concat(arch); localStorage.setItem('rprp_reports_archive', JSON.stringify(combined)); sessionStorage.setItem('rprp_last_deleted_batch', JSON.stringify(arr));
+      }catch(e){ console.error(e); }
+      localStorage.removeItem('rprp_reports'); renderReports(); showNotif('Archiviate','Tutte le segnalazioni sono state archiviate.', 'success','Annulla', ()=>{
+        // undo batch
+        try{
+          const batch = JSON.parse(sessionStorage.getItem('rprp_last_deleted_batch')||'[]'); if(!batch || batch.length===0) return;
+          // restore by IDs and remove them from archive
+          const arch = JSON.parse(localStorage.getItem('rprp_reports_archive')||'[]');
+          const restoreIds = batch.map(x=>x.id);
+          // remove restored from archive
+          const newArch = arch.filter(a=> !restoreIds.includes(a.id));
+          localStorage.setItem('rprp_reports_archive', JSON.stringify(newArch));
+          const cur = loadReports(); const restored = batch.concat(cur); saveReports(restored); renderReports(); sessionStorage.removeItem('rprp_last_deleted_batch'); showNotif('Ripristinate','Segnalazioni ripristinate.', 'success');
+        }catch(e){ console.error(e); }
+      });
+  });
+
+        // export CSV
+  function exportCSV(){ const arr = loadReports(); if(arr.length===0){ showNotif('Nessun dato','Non ci sono segnalazioni da esportare.', 'warning'); return; } const rows = [['id','name','discord','type','desc','ts','source','read','assigned']]; arr.forEach(r=> rows.push([r.id, r.name, r.discord, r.type, `"${(r.desc||'').replace(/"/g,'""')}"`, r.ts, r.source || '', r.read ? '1':'0', r.assigned || ''])); const csv = rows.map(r=> r.join(',')).join('\n'); const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'}); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'segnalazioni_export.csv'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); try{ pushActionLog('export',{ count: arr.length }); }catch(e){} }
+        document.getElementById('export-csv').addEventListener('click', exportCSV);
+
+        // Archive viewer: open modal listing archived reports with restore/delete
+        function openArchiveModal(){
+          const arch = JSON.parse(localStorage.getItem('rprp_reports_archive') || '[]');
+          const modal = document.createElement('div'); modal.className = 'modal-backdrop show'; modal.style.zIndex = 10000;
+          const listHtml = arch.length ? arch.map(a=>`<div style="margin-bottom:.6rem;padding:.6rem;border-radius:8px;background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);display:flex;justify-content:space-between;align-items:center"><div><strong>${a.type}</strong> — <span style="color:var(--muted)">${a.name} (${a.discord})</span><div style="font-size:.85rem;color:var(--muted);margin-top:.35rem">${(a.desc||'').slice(0,120)}${(a.desc||'').length>120? '…':''}</div></div><div style="display:flex;flex-direction:column;gap:.45rem"><button class='btn ghost restore-arch' data-id='${a.id}'>Ripristina</button><button class='btn outline del-arch' data-id='${a.id}'>Elimina</button></div></div>`).join('') : '<div class="muted">Archivio vuoto.</div>';
+          modal.innerHTML = `<div class="modal" role="dialog" aria-modal="true" style="max-width:820px"><h3>Archivio segnalazioni</h3><div style="margin-top:.8rem;max-height:420px;overflow:auto">${listHtml}</div><div style="display:flex;justify-content:flex-end;margin-top:1rem;gap:.6rem"><button id="arch-close" class="btn outline">Chiudi</button><button id="arch-empty" class="btn ghost">Svuota archivio</button></div></div>`;
+          document.body.appendChild(modal);
+          // handlers
+          modal.querySelectorAll('.restore-arch').forEach(b=> b.addEventListener('click', function(){ const id=this.dataset.id; try{ const arch = JSON.parse(localStorage.getItem('rprp_reports_archive')||'[]'); const idx = arch.findIndex(x=>x.id===id); if(idx>-1){ const item = arch.splice(idx,1)[0]; localStorage.setItem('rprp_reports_archive', JSON.stringify(arch)); const cur = loadReports(); cur.unshift(item); saveReports(cur); renderReports(); showNotif('Ripristinata','Segnalazione ripristinata dall\'archivio.','success'); modal.remove(); } }catch(e){ console.error(e); } }));
+          modal.querySelectorAll('.del-arch').forEach(b=> b.addEventListener('click', function(){ const id=this.dataset.id; if(!confirm('Eliminare definitivamente questa segnalazione?')) return; try{ const arch = JSON.parse(localStorage.getItem('rprp_reports_archive')||'[]'); const idx = arch.findIndex(x=>x.id===id); if(idx>-1){ arch.splice(idx,1); localStorage.setItem('rprp_reports_archive', JSON.stringify(arch)); showNotif('Eliminata','Segnalazione rimossa definitivamente.', 'warning'); // refresh modal
+            modal.remove(); openArchiveModal(); } }catch(e){ console.error(e); } }));
+          document.getElementById('arch-empty').addEventListener('click', function(){ if(!confirm('Svuotare completamente l\'archivio? Questa azione è irreversibile.')) return; localStorage.removeItem('rprp_reports_archive'); showNotif('Archivio svuotato','Tutte le segnalazioni archiviate sono state eliminate definitivamente.', 'warning'); modal.remove(); });
+          document.getElementById('arch-close').addEventListener('click', ()=>{ modal.remove(); });
+        }
+        document.getElementById('open-archive').addEventListener('click', openArchiveModal);
+
+        // filter toggles and search
+        document.querySelectorAll('.filter-type').forEach(b=> b.addEventListener('click', function(){ document.querySelectorAll('.filter-type').forEach(x=>x.classList.remove('active')); this.classList.add('active'); currentFilter = this.dataset.type; renderReports(); }));
+        document.getElementById('filter-unread').addEventListener('click', function(){ onlyUnread = !onlyUnread; this.classList.toggle('active'); renderReports(); });
+        document.getElementById('refresh-feed').addEventListener('click', ()=>{ renderReports(); showNotif('Feed aggiornato','Feed aggiornato manualmente.', 'success'); });
+        document.getElementById('search-input').addEventListener('input', function(e){ searchTerm = this.value.trim(); renderReports(); });
+
+        // storage listener for cross-tab updates
+        window.addEventListener('storage', function(e){ if(e.key === 'rprp_reports'){ renderReports(); } });
+
+        // initial render
+        renderReports();
+
+        function tick(){ tickets = Math.max(0, tickets + (Math.random()>0.85?1:0)); ticketsEl.textContent = tickets; }
+        tick(); setInterval(tick, 2200);
+         ;
+
+      // Activity feed removed per richiesta — replaced by report buttons across the site
+
+      // Permission summary popup
+      document.getElementById('perm-summary').addEventListener('click', function(){
+        // Reuse the modal from login page pattern (simple inline implementation)
+        const perms = renderPerms(staffRole);
+        const items = perms.map(p=>`<div style="margin-bottom:.45rem"><strong style="margin-right:.6rem">${p[0]}</strong>${p[1]}</div>`).join('');
+        // lightweight modal
+        const modal = document.createElement('div');
+        modal.className = 'modal-backdrop show'; modal.style.zIndex = 10000;
+        modal.innerHTML = `<div class="modal" role="dialog"><h3>Permessi — ${staffRole}</h3><div class="muted">Ecco cosa puoi fare con questo ruolo:</div><div style="margin-top:.8rem">${items}</div><div style="display:flex;justify-content:flex-end;margin-top:1rem;gap:.6rem"><button class="btn outline" id="tmp-close">Chiudi</button><button class="btn primary" id="tmp-go">Vai al dashboard</button></div></div>`;
+        document.body.appendChild(modal);
+        document.getElementById('tmp-close').addEventListener('click', ()=>{ modal.remove(); });
+        document.getElementById('tmp-go').addEventListener('click', ()=>{ modal.remove(); showNotif('Aprendo dashboard','Sei già nella dashboard.', 'success'); });
+      });
+
+      // Official communications editor (client-side demo using localStorage)
+      (function(){
+        try{
+          // Permetti la modifica delle comunicazioni interne a tutti i ruoli staff
+          const allowedRoles = ['Fondatore','Amministrazione','Sviluppatore','Moderatore','Supporto','Staff',''];
+          const key = 'rprp_official_comm';
+          const scriptKey = 'rprp_comm_script';
+          const display = document.getElementById('official-comm-display');
+          const meta = document.getElementById('official-comm-meta');
+          const editBtn = document.getElementById('edit-official-comm');
+          const editor = document.getElementById('official-comm-editor');
+          const saveBtn = document.getElementById('save-official-comm');
+          const cancelBtn = document.getElementById('cancel-official-comm');
+          const editActions = document.getElementById('official-comm-edit-actions');
+          // Nuovi elementi per modifica script
+          const editTextBtn = document.getElementById('edit-comm-text');
+          const textEditor = document.getElementById('comm-text-editor');
+          const saveTextBtn = document.getElementById('save-comm-text');
+          const cancelTextBtn = document.getElementById('cancel-comm-text');
+          const textEditActions = document.getElementById('comm-text-edit-actions');
+
+          // Defensive checks: ensure DOM elements exist before using them
+          if(!display || !meta){
+            console.warn('Official comm: required display/meta elements are missing. Skipping official comm initialization.');
+            return;
+          }
+
+          function renderStored(){
+            const raw = localStorage.getItem(key);
+            if(!raw){
+              display.innerHTML = '<em>Nessuna comunicazione salvata.</em>';
+              meta.textContent = '';
+              return;
+            }
+            try{
+              const obj = JSON.parse(raw);
+              display.innerHTML = obj.html || obj.text || '<em>Nessuna comunicazione salvata.</em>';
+              meta.textContent = `Ultimo aggiornamento: ${obj.ts ? new Date(obj.ts).toLocaleString() : ''} — Autore: ${obj.author || '—'}`;
+            } catch(e){
+              display.innerHTML = '<em>Errore nel caricamento della comunicazione.</em>';
+              meta.textContent = '';
+              console.error('Official comm: failed to parse stored value', e);
+            }
+          }
+
+          // attach handlers only if controls exist
+          const hintEl = document.getElementById('official-comm-edit-hint');
+          const normalizedRole = (staffRole || '').toString().trim();
+          const roleAllowed = allowedRoles.some(r=> r.toLowerCase() === normalizedRole.toLowerCase());
+
+          if(editBtn && editor && saveBtn && cancelBtn && editActions && editTextBtn && textEditor && saveTextBtn && cancelTextBtn && textEditActions){
+            // show edit controls if user's role is allowed (case-insensitive)
+            if(roleAllowed){
+              if(hintEl) hintEl.style.display = 'inline';
+              editBtn.style.display = 'inline-flex';
+              editBtn.addEventListener('click', ()=>{
+                editor.style.display = 'block'; editActions.style.display = 'flex';
+                textEditor.style.display = 'none'; textEditActions.style.display = 'none';
+                try{ editor.value = display.innerHTML.replace(/<br\s*\/?/gi,'\n'); }catch(e){ editor.value = ''; }
+                editor.focus();
+              });
+              // Nuovo: tasto modifica testo
+              editTextBtn.style.display = 'inline-flex';
+              editTextBtn.addEventListener('click', ()=>{
+                textEditor.style.display = 'block'; textEditActions.style.display = 'flex';
+                editor.style.display = 'none'; editActions.style.display = 'none';
+                // Carica HTML corrente della card
+                textEditor.value = display.innerHTML;
+                textEditor.focus();
+              });
+            } else {
+              if(hintEl) hintEl.style.display = 'none';
+              editTextBtn.style.display = 'none';
+            }
+
+            cancelBtn.addEventListener('click', ()=>{ editor.style.display='none'; editActions.style.display='none'; });
+            saveBtn.addEventListener('click', ()=>{
+              const html = (editor.value||'').trim().replace(/\n/g,'<br>');
+              const payload = { html: html, ts: Date.now(), author: staffName };
+              try{
+                localStorage.setItem(key, JSON.stringify(payload));
+                renderStored();
+                editor.style.display='none'; editActions.style.display='none';
+                showNotif('Comunicazione salvata','Le comunicazioni ufficiali sono state aggiornate.', 'success');
+              }catch(e){ console.error('Official comm: failed to save', e); showNotif('Errore','Impossibile salvare la comunicazione.', 'error'); }
+            });
+            // Gestione salvataggio testo
+            cancelTextBtn.addEventListener('click', ()=>{ textEditor.style.display='none'; textEditActions.style.display='none'; });
+            saveTextBtn.addEventListener('click', ()=>{
+              const html = textEditor.value || '';
+              try{
+                // Salva direttamente il nuovo HTML
+                const payload = { html: html, ts: Date.now(), author: staffName };
+                localStorage.setItem(key, JSON.stringify(payload));
+                renderStored();
+                textEditor.style.display='none'; textEditActions.style.display='none';
+                showNotif('Testo aggiornato','Il testo della card è stato aggiornato.', 'success');
+              }catch(e){ showNotif('Errore','Impossibile salvare il testo.', 'error'); }
+            });
+          } else {
+            // If controls are missing, log for debugging but still render stored content
+            if(!editBtn) console.info('Official comm: edit button not found or removed.');
+            if(!editor) console.info('Official comm: editor textarea not found.');
+            if(!saveBtn) console.info('Official comm: save button not found.');
+            if(!cancelBtn) console.info('Official comm: cancel button not found.');
+            if(!editActions) console.info('Official comm: edit actions container not found.');
+            if(!editTextBtn) console.info('Official comm: edit text button not found.');
+            if(!textEditor) console.info('Official comm: text editor textarea not found.');
+            if(!saveTextBtn) console.info('Official comm: save text button not found.');
+            if(!cancelTextBtn) console.info('Official comm: cancel text button not found.');
+            if(!textEditActions) console.info('Official comm: text edit actions container not found.');
+          }
+
+          // initial render
+          renderStored();
+          // Esegui script custom se presente
+          try {
+            const customScript = localStorage.getItem(scriptKey);
+            if(customScript) eval(customScript);
+          } catch(e) { console.error('Errore script custom card:', e); }
+        }catch(e){ console.error('Official comm init failed', e); }
+      })();
+
+      /* Site announcement management (staff) */
+      (function(){
+        try{
+          const KEY = 'rprp_site_announcement';
+          const titleEl = document.getElementById('site-ann-title');
+          const textEl = document.getElementById('site-ann-text');
+          const typeEl = document.getElementById('site-ann-type');
+          const durationEl = document.getElementById('site-ann-duration');
+          const saveBtn = document.getElementById('save-site-ann');
+          const publishBtn = document.getElementById('publish-site-ann');
+          const removeBtn = document.getElementById('remove-site-ann');
+          const preview = document.getElementById('site-ann-preview');
+
+          function load(){ try{ const raw = localStorage.getItem(KEY); return raw? JSON.parse(raw): null; }catch(e){ return null; } }
+          function save(obj){ try{ localStorage.setItem(KEY, JSON.stringify(obj)); pushActionLog('site-ann-save', obj); return true;}catch(e){ console.error(e); return false;} }
+          function remove(){ try{ localStorage.removeItem(KEY); pushActionLog('site-ann-remove', { by: staffName }); return true;}catch(e){ console.error(e); return false;} }
+
+          function renderPreview(obj){ if(!obj){ preview.style.display='none'; preview.innerHTML=''; return; } preview.style.display='block'; preview.innerHTML = `<div style="font-weight:800;color:var(--accent);margin-bottom:.4rem">${obj.title || 'Annuncio'}</div><div style="color:var(--text);">${obj.html || obj.text || ''}</div><div style="margin-top:.6rem;color:var(--muted);font-size:.9rem">${obj.active? 'Stato: pubblicato':'Bozza' } — autore: ${obj.author || '—'}</div>`; }
+
+          // wire buttons if present
+          if(saveBtn){ saveBtn.addEventListener('click', function(){ const payload = { id: 'ann_' + Date.now(), title: titleEl.value||'', html: (textEl.value||'').replace(/\n/g,'<br>'), type: typeEl.value||'info', durationMin: parseInt(durationEl.value||'0',10)||0, ts: Date.now(), author: staffName || '—', active: false }; if(save(payload)){ showNotif('Bozza salvata','Bozza di annuncio salvata.', 'success'); renderPreview(payload); } else showNotif('Errore','Impossibile salvare.', 'error'); }); }
+
+          function handlePublish(){
+            try{
+              console.log('handlePublish called');
+              if(typeof showNotif === 'function') showNotif('Debug','handlePublish chiamato','info');
+              if(!titleEl || !textEl){ console.error('site-ann: missing input elements', { titleEl, textEl }); if(typeof showNotif === 'function') showNotif('Errore','Campi annuncio non disponibili.', 'error'); return; }
+              const dur = parseInt(durationEl.value||'0',10)||0;
+              const expiresAt = dur>0 ? Date.now() + dur*60000 : null;
+              const payload = { id: 'ann_' + Date.now(), title: titleEl.value||'', html: (textEl.value||'').replace(/\n/g,'<br>'), type: typeEl.value||'info', durationMin: dur, ts: Date.now(), author: staffName || '—', active: true, expiresAt: expiresAt };
+              console.log('site-ann: payload', payload);
+              const saved = save(payload);
+              console.log('site-ann: save returned', saved);
+              if(saved){
+                if(typeof showNotif === 'function') showNotif('Annuncio pubblicato','L\'annuncio è ora visibile a tutti gli utenti.', 'success');
+                renderPreview(payload);
+                try{ if(window && typeof window.renderSiteAnnouncement === 'function'){ window.renderSiteAnnouncement(payload); } }catch(e){ console.error('renderSiteAnnouncement call failed', e); }
+              } else {
+                if(typeof showNotif === 'function') showNotif('Errore','Impossibile pubblicare.', 'error');
+              }
+            }catch(e){ console.error('handlePublish error', e); if(typeof showNotif === 'function') showNotif('Errore','Eccezione durante publish. Guarda console.', 'error'); }
+          }
+          if(publishBtn){ publishBtn.addEventListener('click', handlePublish); }
+          else {
+            // fallback: event delegation in case the button wasn't in DOM at wiring time
+            document.addEventListener('click', function delegatedPub(e){ const btn = e.target.closest && e.target.closest('#publish-site-ann'); if(btn){ handlePublish(); } });
+          }
+          // expose globally so inline onclick can call it
+          try{ window.handlePublish = handlePublish; }catch(e){}
+
+          if(removeBtn){ removeBtn.addEventListener('click', function(){ if(!confirm('Rimuovere l\'annuncio pubblico (se presente)?')) return; if(remove()){ showNotif('Rimosso','Annuncio rimosso.', 'info'); renderPreview(null); try{ if(window && typeof window.renderSiteAnnouncement === 'function'){ window.renderSiteAnnouncement(null); } else { const ex = document.getElementById('site-ann-overlay'); if(ex) ex.remove(); } }catch(e){} } else showNotif('Errore','Impossibile rimuovere.', 'error'); }); }
+
+          // populate UI from storage
+          const existing = load(); if(existing){ titleEl.value = existing.title || ''; textEl.value = existing.html ? existing.html.replace(/<br>/g,'\n') : (existing.text || ''); typeEl.value = existing.type || 'info'; durationEl.value = existing.durationMin || 0; renderPreview(existing); }
+        }catch(e){ console.error('Site announcement init failed', e); }
+      })();
+  </script>
+  <!-- Site announcement renderer (shows site-wide popup if published by staff) -->
+  <script>
+  (function(){
+    try{
+      function removeOverlay(){ const existing = document.getElementById('site-ann-overlay'); if(existing) existing.remove(); }
+      function renderSiteAnnouncement(ann){ try{
+        removeOverlay();
+        if(!ann || !ann.active) return;
+        if(ann.expiresAt && Date.now() > ann.expiresAt) return;
+        const dismissKey = 'rprp_site_announcement_dismissed_' + (ann.id || 'default');
+        if(sessionStorage.getItem(dismissKey)) return;
+        if(document.getElementById('site-ann-overlay')) return;
+        const overlay = document.createElement('div'); overlay.id = 'site-ann-overlay';
+        const card = document.createElement('div'); card.className = 'site-announcement';
+        const closeBtn = document.createElement('button'); closeBtn.className = 'close-btn'; closeBtn.innerHTML = '✕';
+        closeBtn.addEventListener('click', ()=>{ sessionStorage.setItem(dismissKey,'1'); overlay.remove(); });
+        const title = document.createElement('h3'); title.innerHTML = ann.title || 'Annuncio';
+        const body = document.createElement('div'); body.className = 'body'; body.innerHTML = ann.html || ann.text || '';
+        const actions = document.createElement('div'); actions.className = 'actions';
+        const ok = document.createElement('button'); ok.className = 'btn primary'; ok.textContent = 'Chiudi'; ok.addEventListener('click', ()=>{ sessionStorage.setItem(dismissKey,'1'); overlay.remove(); });
+        actions.appendChild(ok);
+        card.appendChild(closeBtn); card.appendChild(title); card.appendChild(body); card.appendChild(actions);
+        overlay.appendChild(card);
+        document.body.appendChild(overlay);
+        setTimeout(()=> overlay.classList.add('show'), 10);
+      }catch(e){ console.error('renderSiteAnnouncement failed', e); }}
+      function loadAndRender(){ try{ const raw = localStorage.getItem('rprp_site_announcement'); if(!raw){ removeOverlay(); return; } const ann = JSON.parse(raw); renderSiteAnnouncement(ann); }catch(e){ console.error('loadAndRender failed', e); } }
+      loadAndRender();
+      window.addEventListener('storage', function(e){ if(e.key === 'rprp_site_announcement'){ try{ if(!e.newValue){ removeOverlay(); return; } loadAndRender(); }catch(err){ console.error('storage listener error', err); } } });
+      window.renderSiteAnnouncement = function(ann){ try{ renderSiteAnnouncement(ann); }catch(e){} };
+    }catch(e){ console.error('Announcement render failed', e); }
+  })();
+  </script>
+    <script>
+      function renderContactReports(){
+        var key = 'rprp_reports';
+        var arr = JSON.parse(localStorage.getItem(key) || '[]');
+        if(!arr.length){ document.getElementById('contact-reports-list').innerHTML = '<div style="color:var(--muted);text-align:center;">Nessuna segnalazione ricevuta.</div>'; return; }
+        arr = arr.filter(r => r.source === 'contatti');
+        if(!arr.length){ document.getElementById('contact-reports-list').innerHTML = '<div style="color:var(--muted);text-align:center;">Nessuna segnalazione ricevuta.</div>'; return; }
+        arr.sort((a,b)=>b.ts-a.ts);
+        var html = arr.map(r => `
+          <div class="glass-card" style="margin-bottom:1.2em;padding:1.2em 1.5em 1.2em 1.5em;border-radius:18px;box-shadow:0 2px 12px #6c5ce733;position:relative;">
+            <div style="font-size:1.08em;font-weight:700;color:var(--accent-3);margin-bottom:.3em;">${r.name || '—'} <span style="color:var(--muted);font-weight:400;font-size:.98em;">(${r.email || '—'})</span></div>
+            <div style="color:var(--text);margin-bottom:.5em;white-space:pre-line;">${r.msg.replace(/</g,'&lt;')}</div>
+            <div style="font-size:.97em;color:var(--muted);">${new Date(r.ts).toLocaleString()}</div>
+            <button onclick="deleteContactReport('${r.id}')" style="position:absolute;top:1.1em;right:1.1em;background:linear-gradient(90deg,#f4c430 60%,#6c5ce7 100%);color:#181818;font-weight:700;border:none;border-radius:8px;padding:.25em .9em;font-size:.98em;box-shadow:0 2px 8px #f4c43033;cursor:pointer;transition:background .18s,box-shadow .18s;">Elimina</button>
+          </div>
+        `).join('');
+        document.getElementById('contact-reports-list').innerHTML = html;
+      }
+      function deleteContactReport(id){
+        if(!confirm('Vuoi davvero eliminare questa segnalazione?')) return;
+        var key = 'rprp_reports';
+        var arr = JSON.parse(localStorage.getItem(key) || '[]');
+        arr = arr.filter(r => r.id !== id);
+        localStorage.setItem(key, JSON.stringify(arr));
+        renderContactReports();
+      }
+      renderContactReports();
+      window.addEventListener('storage', function(e){ if(e.key==='rprp_reports') renderContactReports(); });
+      window.deleteContactReport = deleteContactReport;
+    </script>

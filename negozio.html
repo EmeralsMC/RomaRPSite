@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Negozio - ROMA RP</title>
+  <link rel="stylesheet" href="code.css" />
+</head>
+<body>
+  <header class="nav">
+    <div class="wrap container">
+      <a class="brand" href="index.html"><img src="download.png" alt="Logo Roma RP" class="logo-small"></a>
+  <button class="nav-toggle" aria-expanded="false" aria-label="Apri menu"> <span class="bar"></span> </button>
+  <nav class="links" aria-label="Primaria">
+        <a href="index.html">Home</a>
+        <a href="chi-siamo.html">Chi Siamo</a>
+        <a href="roleplay.html">RolePlay</a>
+        <a href="negozio.html" aria-current="page">Negozio</a>
+  <a href="contatti.html" class="cta">Contattaci</a>
+  <a id="nav-login-btn" class="btn nav-login" href="staff-login.html">Accedi</a>
+      </nav>
+    </div>
+  </header>
+  <script>
+    (function(){
+      const nav = document.querySelector('.nav');
+      const toggle = document.querySelector('.nav-toggle');
+      if(toggle){ toggle.addEventListener('click', function(){ const opened = nav.classList.toggle('nav-open'); toggle.setAttribute('aria-expanded', opened ? 'true' : 'false'); }); }
+      const staff = sessionStorage.getItem('rprp_staff');
+      if(staff){ const a = document.getElementById('nav-login-btn'); if(a){ a.textContent = staff; a.classList.add('profile'); a.href = 'staff-dashboard.html'; } }
+    })();
+  </script>
+  <main class="container">
+    <section class="shop-hero-new wow-hero" style="position:relative;overflow:visible;min-height:420px;display:flex;flex-direction:column;align-items:center;justify-content:center;margin-bottom:2.5rem;">
+      <div class="particles-overlay floating-particles"></div>
+      <div class="shop-hero-lights"></div>
+      <h1 class="shop-title-new wow-title" style="font-size:3.2rem;font-weight:900;letter-spacing:-2px;text-shadow:0 2px 48px #6c5ce7cc,0 1px 0 #fffbe6;animation:wowFadeIn 1.2s cubic-bezier(.4,1.6,.4,1);">ROMA RP SHOP</h1>
+      <p class="shop-subtitle-new wow-subtitle" style="font-size:1.35rem;margin-top:.9rem;max-width:750px;text-align:center;animation:wowFadeInUp 1.5s .2s cubic-bezier(.4,1.6,.4,1) both;">Un nuovo modo di acquistare: <span class="luxury-badge wow-badge">veloce</span>, <span class="luxury-badge wow-badge">sicuro</span>, <span class="luxury-badge wow-badge">esclusivo</span>.<br><span class="shop-badge animate-scalein wow-badge" style="margin-top:.7em;display:inline-block;">Scorri per scoprire i prodotti</span></p>
+    </section>
+
+    <section class="shop-cards-section" style="width:100%;display:flex;justify-content:center;margin-bottom:3.5rem;">
+      <div class="shop-cards-row" style="
+        display:flex;
+        flex-wrap:wrap;
+        justify-content:center;
+        gap:2rem;
+        max-width:1100px;
+      ">
+        
+        <!-- CARD 1 -->
+        <div class="shop-card-main glass-card wow-card" style="
+          width:300px;
+          display:flex;
+          flex-direction:column;
+          align-items:center;
+          text-align:center;
+          padding:2rem;
+          border-radius:22px;
+        ">
+          <div style="font-size:2.5rem;margin-bottom:1rem;">🧑‍🦱</div>
+          <div class="luxury-badge wow-badge-glow" style="font-size:1.18em;font-weight:700;">Secondo PG Minorenne</div>
+          <div class="shop-price-box" style="margin:1rem 0;">
+            <span class="shop-price" style="
+              font-size:1.18em;
+              background:linear-gradient(90deg,#f4c430 60%,#fffbe6 100%);
+              color:#181818;
+              padding:.4em 1.2em;
+              border-radius:14px;
+              font-weight:700;
+            ">450 Robux</span>
+          </div>
+          <a class="shop-btn icon-anim" style="
+            width:100%;
+            max-width:220px;
+            font-weight:700;
+            background:linear-gradient(90deg,#f4c430 60%,#fffbe6 100%);
+            color:#181818;
+            padding:.6em 0;
+            border-radius:14px;
+          " href="#">Acquista</a>
+        </div>
+
+        <!-- CARD 2 -->
+        <div class="shop-card-main glass-card wow-card" style="
+          width:300px;
+          display:flex;
+          flex-direction:column;
+          align-items:center;
+          text-align:center;
+          padding:2rem;
+          border-radius:22px;
+        ">
+          <div style="font-size:2.5rem;margin-bottom:1rem;">🧑‍🦳</div>
+          <div class="luxury-badge wow-badge-glow" style="font-size:1.18em;font-weight:700;">Secondo PG Maggiorenne</div>
+          <div class="shop-price-box" style="margin:1rem 0;">
+            <span class="shop-price" style="
+              font-size:1.18em;
+              background:linear-gradient(90deg,#f4c430 60%,#fffbe6 100%);
+              color:#181818;
+              padding:.4em 1.2em;
+              border-radius:14px;
+              font-weight:700;
+            ">800 Robux</span>
+          </div>
+          <a class="shop-btn icon-anim" style="
+            width:100%;
+            max-width:220px;
+            font-weight:700;
+            background:linear-gradient(90deg,#f4c430 60%,#fffbe6 100%);
+            color:#181818;
+            padding:.6em 0;
+            border-radius:14px;
+          " href="#">Acquista</a>
+        </div>
+
+        <!-- CARD 3 -->
+        <div class="shop-card-main glass-card wow-card" style="
+          width:300px;
+          display:flex;
+          flex-direction:column;
+          align-items:center;
+          text-align:center;
+          padding:2rem;
+          border-radius:22px;
+        ">
+          <div style="font-size:2.5rem;margin-bottom:1rem;">🛡️</div>
+          <div class="luxury-badge wow-badge-glow" style="font-size:1.18em;font-weight:700;">Accesso Fazione</div>
+          <div class="shop-price-box" style="margin:1rem 0;">
+            <span class="shop-price" style="
+              font-size:1.18em;
+              background:linear-gradient(90deg,#f4c430 60%,#fffbe6 100%);
+              color:#181818;
+              padding:.4em 1.2em;
+              border-radius:14px;
+              font-weight:700;
+            ">100 Robux</span>
+          </div>
+          <a class="shop-btn icon-anim" style="
+            width:100%;
+            max-width:220px;
+            font-weight:700;
+            background:linear-gradient(90deg,#f4c430 60%,#fffbe6 100%);
+            color:#181818;
+            padding:.6em 0;
+            border-radius:14px;
+          " href="https://www.roblox.com/it/catalog/129719810276913/Accesso-Fazione">Acquista</a>
+        </div>
+
+        <!-- CARD 4 -->
+        <div class="shop-card-main glass-card wow-card" style="
+          width:300px;
+          display:flex;
+          flex-direction:column;
+          align-items:center;
+          text-align:center;
+          padding:2rem;
+          border-radius:22px;
+        ">
+          <div style="font-size:2.5rem;margin-bottom:1rem;">🏢</div>
+          <div class="luxury-badge wow-badge-glow" style="font-size:1.18em;font-weight:700;">Azienda Gratis</div>
+          <div class="shop-price-box" style="margin:1rem 0;">
+            <span class="shop-price" style="
+              font-size:1.18em;
+              background:linear-gradient(90deg,#f4c430 60%,#fffbe6 100%);
+              color:#181818;
+              padding:.4em 1.2em;
+              border-radius:14px;
+              font-weight:700;
+            ">150 Robux</span>
+          </div>
+          <a class="shop-btn icon-anim" style="
+            width:100%;
+            max-width:220px;
+            font-weight:700;
+            background:linear-gradient(90deg,#f4c430 60%,#fffbe6 100%);
+            color:#181818;
+            padding:.6em 0;
+            border-radius:14px;
+          " href="https://www.roblox.com/it/catalog/87831982912194/Azienda-Gratuita">Acquista</a>
+        </div>
+
+      </div>
+    </section>
+      <style>
+        /* WOW EFFECTS */
+        .wow-hero { background: radial-gradient(ellipse at 60% 0,#f4c43022 0,#6c5ce711 60%,transparent 100%), linear-gradient(120deg,rgba(244,196,48,0.10),rgba(108,92,231,0.10),rgba(20,24,38,0.98)); }
+        .shop-hero-lights { position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;background:radial-gradient(circle at 30% 40%,#f4c43033 0,#f4c43011 80px,transparent 180px),radial-gradient(circle at 70% 60%,#6c5ce733 0,#6c5ce711 80px,transparent 180px);animation: wowLightsMove 8s linear infinite alternate;opacity:.7; }
+        @keyframes wowLightsMove { 0%{background-position:0 0,0 0;} 100%{background-position:40px 60px,-40px -60px;} }
+        .floating-particles { animation: wowParticlesFloat 12s linear infinite alternate; }
+        @keyframes wowParticlesFloat { 0%{transform:translateY(0);} 100%{transform:translateY(-18px);} }
+        .wow-title { animation: wowFadeIn 1.2s cubic-bezier(.4,1.6,.4,1); }
+        .wow-subtitle { animation: wowFadeInUp 1.5s .2s cubic-bezier(.4,1.6,.4,1) both; }
+        @keyframes wowFadeIn { from{opacity:0;transform:scale(.96);} to{opacity:1;transform:scale(1);} }
+        @keyframes wowFadeInUp { from{opacity:0;transform:translateY(32px);} to{opacity:1;transform:translateY(0);} }
+        .wow-badge { animation: wowBadgeGlow 2.2s infinite alternate cubic-bezier(.4,1.6,.4,1); }
+        @keyframes wowBadgeGlow { 0%{box-shadow:0 0 0 #f4c43000;} 100%{box-shadow:0 0 24px #f4c43088,0 0 12px #6c5ce788;} }
+        .wow-carousel { perspective: 1200px; }
+        .wow-card { transition: transform .35s cubic-bezier(.4,1.6,.4,1), box-shadow .22s; will-change: transform, box-shadow; position:relative; }
+        .wow-card:hover { transform: rotateY(8deg) scale(1.045) translateY(-8px); box-shadow:0 32px 80px 0 #f4c43055,0 8px 32px 0 #6c5ce7aa; z-index:2; }
+        .wow-card-glow { position:absolute;inset:0;pointer-events:none;z-index:1;border-radius:inherit;box-shadow:0 0 48px 8px #f4c43033,0 0 32px 4px #6c5ce733;opacity:0.7;transition:opacity .22s; }
+        .wow-card:hover .wow-card-glow { opacity:1; }
+        .wow-badge-glow { animation: wowBadgeGlow 2.2s infinite alternate cubic-bezier(.4,1.6,.4,1); }
+      </style>
+    </section>
+    <section class="shop-benefits-new glass-section animate-scalein" style="margin:0 auto 2.5rem auto;max-width:900px;padding:2.2rem 2.5rem 2.2rem 2.2rem;box-shadow:0 16px 48px 0 rgba(244,196,48,0.10),0 2px 12px 0 rgba(108,92,231,0.10);border-radius:28px;">
+      <h2 style="font-size:1.45rem;font-weight:700;letter-spacing:-.5px;margin-bottom:.7em;text-align:center;">Perché scegliere il nostro shop?</h2>
+      <div style="display:flex;flex-wrap:wrap;gap:1.5em;justify-content:center;align-items:center;">
+        <div class="luxury-badge animate-scalein" style="font-size:1.08em;">✔️ Pagamenti sicuri e protetti</div>
+        <div class="luxury-badge animate-scalein" style="font-size:1.08em;animation-delay:.08s;">⚡ Consegna automatica e immediata</div>
+        <div class="luxury-badge animate-scalein" style="font-size:1.08em;animation-delay:.16s;">🎁 Offerte e bonus esclusivi</div>
+        <div class="luxury-badge animate-scalein" style="font-size:1.08em;animation-delay:.24s;">💬 Supporto dedicato 24/7</div>
+      </div>
+    </section>
+    <section class="shop-support-new glass-card animate-scalein" style="margin:0 auto 2.5rem auto;max-width:600px;padding:2.2rem 2.2rem 2rem 2.2rem;box-shadow:0 16px 48px 0 rgba(244,196,48,0.10),0 2px 12px 0 rgba(108,92,231,0.10);border-radius:28px;text-align:center;">
+      <div style="font-size:2.5rem;margin-bottom:1rem;">💬</div>
+      <div class="luxury-badge wow-badge-glow" style="font-size:1.18em;font-weight:700;margin-bottom:1.2em;">Serve aiuto?</div>
+      <div style="font-size:1.13em;margin-bottom:1.5em;">Hai domande o problemi?<br>Il nostro staff è sempre pronto ad aiutarti!</div>
+      <a href="contatti.html" class="shop-btn icon-anim" style="display:inline-block;font-weight:700;font-size:1.13em;max-width:220px;width:100%;background:linear-gradient(90deg,#f4c430 60%,#fffbe6 100%);color:#181818;padding:.6em 0;border-radius:14px;box-shadow:0 2px 12px #f4c43033;">Contattaci</a>
+    </section>
+  </main>
+  <script>
+    document.getElementById('nav-login-btn').addEventListener('click', function(){
+      if(window.openRomaLogin){ window.openRomaLogin(); } else { window.location.href = 'index.html#login'; }
+    });
+  </script>
+  <script>
+    // Animazione, tooltip e suono per bottone segnalazione
+    (function(){
+      const btn = document.getElementById('report-btn');
+      const tooltip = document.getElementById('report-tooltip');
+      if(btn) {
+        btn.style.zIndex = 99999;
+        btn.tabIndex = 0;
+        btn.addEventListener('focus', ()=> btn.style.boxShadow = '0 0 0 4px #ffe082');
+        btn.addEventListener('blur', ()=> btn.style.boxShadow = '0 4px 24px 0 rgba(244,196,48,0.18),0 0 16px 2px #ffe08280');
+        btn.addEventListener('mouseenter', ()=>{ if(tooltip) tooltip.style.opacity = 1; });
+        btn.addEventListener('mouseleave', ()=>{ if(tooltip) tooltip.style.opacity = 0; });
+      }
+    })();
+    // Sistema segnalazione moderno e uniforme
+    (function(){
+      const btn = document.getElementById('report-btn');
+      const modal = document.getElementById('report-modal');
+      const formName = document.getElementById('rep-name');
+      const formDiscord = document.getElementById('rep-discord');
+      const formType = document.getElementById('rep-type');
+      const formDesc = document.getElementById('rep-desc');
+      const cancelBtn = document.getElementById('rep-cancel');
+      const sendBtn = document.getElementById('rep-send');
+      let isOpen = false;
+      function openReport(){
+        if(isOpen) return;
+        isOpen = true;
+        modal.style.display = 'flex';
+        // animazione modal
+        const modalContent = modal.querySelector('.modal-content');
+        if(modalContent) {
+          modalContent.classList.remove('animated');
+          void modalContent.offsetWidth;
+          modalContent.classList.add('animated');
+        }
+        // suono
+        const audio = document.getElementById('report-open-audio');
+        if(audio) { audio.currentTime = 0; audio.play(); }
+        setTimeout(()=>{ formName.focus(); }, 100);
+      }
+      function closeReport(){
+        if(!isOpen) return;
+        isOpen = false;
+        modal.style.display = 'none';
+      }
+      btn.addEventListener('click', openReport);
+      cancelBtn.addEventListener('click', closeReport);
+      // invio
+      sendBtn.addEventListener('click', function(){
+        const name = formName.value.trim();
+        const discord = formDiscord.value.trim();
+        const type = formType.value;
+        const desc = formDesc.value.trim();
+        if(!type || !desc){ alert('Compila tutti i campi obbligatori.'); return; }
+        const id = 'rprp_' + Date.now() + '_' + Math.floor(Math.random()*10000);
+        const payload = { id, name, discord, type, desc, ts: Date.now(), source: window.location.pathname, read: false };
+        const key = 'rprp_reports';
+        const arr = JSON.parse(localStorage.getItem(key) || '[]'); arr.push(payload); localStorage.setItem(key, JSON.stringify(arr));
+        closeReport(); alert('Segnalazione inviata! Lo staff la vedrà nella dashboard.');
+        // reset form
+        formName.value = '';
+        formDiscord.value = '';
+        formType.value = '';
+        formDesc.value = '';
+      });
+      // Chiudi modal con ESC
+      document.addEventListener('keydown', function(e){
+        if(e.key === 'Escape') closeReport();
+      });
+      // Chiudi cliccando fuori
+      modal.addEventListener('click', function(e){
+        if(e.target === modal) closeReport();
+      });
+    })();
+  </script>
+  <!-- Site announcement renderer (shows site-wide popup if published by staff) -->
+  <script>
+  (function(){
+    try{
+      function removeOverlay(){ const existing = document.getElementById('site-ann-overlay'); if(existing) existing.remove(); }
+      function renderSiteAnnouncement(ann){ try{
+        removeOverlay();
+        if(!ann || !ann.active) return;
+        if(ann.expiresAt && Date.now() > ann.expiresAt) return;
+        const dismissKey = 'rprp_site_announcement_dismissed_' + (ann.id || 'default');
+        if(sessionStorage.getItem(dismissKey)) return;
+        if(document.getElementById('site-ann-overlay')) return;
+        const overlay = document.createElement('div'); overlay.id = 'site-ann-overlay';
+        const card = document.createElement('div'); card.className = 'site-announcement';
+        const closeBtn = document.createElement('button'); closeBtn.className = 'close-btn'; closeBtn.innerHTML = '✕';
+        closeBtn.addEventListener('click', ()=>{ sessionStorage.setItem(dismissKey,'1'); overlay.remove(); });
+        const title = document.createElement('h3'); title.innerHTML = ann.title || 'Annuncio';
+        const body = document.createElement('div'); body.className = 'body'; body.innerHTML = ann.html || ann.text || '';
+        const actions = document.createElement('div'); actions.className = 'actions';
+        const ok = document.createElement('button'); ok.className = 'btn primary'; ok.textContent = 'Chiudi'; ok.addEventListener('click', ()=>{ sessionStorage.setItem(dismissKey,'1'); overlay.remove(); });
+        actions.appendChild(ok);
+        card.appendChild(closeBtn); card.appendChild(title); card.appendChild(body); card.appendChild(actions);
+        overlay.appendChild(card);
+        document.body.appendChild(overlay);
+        setTimeout(()=> overlay.classList.add('show'), 10);
+      }catch(e){ console.error('renderSiteAnnouncement failed', e); }}
+      function loadAndRender(){ try{ const raw = localStorage.getItem('rprp_site_announcement'); if(!raw){ removeOverlay(); return; } const ann = JSON.parse(raw); renderSiteAnnouncement(ann); }catch(e){ console.error('loadAndRender failed', e); } }
+      loadAndRender();
+      window.addEventListener('storage', function(e){ if(e.key === 'rprp_site_announcement'){ try{ if(!e.newValue){ removeOverlay(); return; } loadAndRender(); }catch(err){ console.error('storage listener error', err); } } });
+      window.renderSiteAnnouncement = function(ann){ try{ renderSiteAnnouncement(ann); }catch(e){} };
+    }catch(e){ console.error('Announcement render failed', e); }
+  })();
+  </script>
+  <script>  
+    (function(){
+      function openReport(){ document.getElementById('report-modal').style.display='flex'; document.getElementById('rep-name').focus(); }
+      function closeReport(){ document.getElementById('report-modal').style.display='none'; }
+      document.getElementById('report-btn').addEventListener('click', openReport);
+      document.getElementById('rep-cancel').addEventListener('click', closeReport);
+      document.getElementById('rep-send').addEventListener('click', function(){
+        const name = document.getElementById('rep-name').value.trim();
+        const discord = document.getElementById('rep-discord').value.trim();
+        const type = document.getElementById('rep-type').value;
+        const desc = document.getElementById('rep-desc').value.trim();
+        if(!name || !discord || !desc){ alert('Compila tutti i campi richiesti.'); return; }
+        const id = 'rprp_' + Date.now() + '_' + Math.floor(Math.random()*10000);
+        const payload = { id, name, discord, type, desc, ts: Date.now(), source: window.location.pathname, read: false };
+        const key = 'rprp_reports';
+        const arr = JSON.parse(localStorage.getItem(key) || '[]'); arr.push(payload); localStorage.setItem(key, JSON.stringify(arr));
+        closeReport(); alert('Segnalazione inviata (demo). Lo staff la vedrà nella dashboard.');
+      });
+    })();
+  </script>
+</body>
+</html>
