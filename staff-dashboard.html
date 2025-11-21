@@ -401,30 +401,34 @@
           card.style.opacity = 0;
           setTimeout(()=>{ card.style.transition = 'opacity .7s cubic-bezier(.4,1.6,.4,1)'; card.style.opacity = 1; }, 80);
         });
-        // Attach actions
+        // Attach actions (use modal confirmations)
         feed.querySelectorAll('.archive-report').forEach(btn => btn.addEventListener('click', function() {
           const idx = +this.dataset.idx;
-          if (!confirm('Archiviare questa segnalazione?')) return;
-          let reports = JSON.parse(localStorage.getItem('rprp_reports') || '[]');
-          const archived = reports.splice(idx, 1)[0];
-          let arch = [];
-          try { arch = JSON.parse(localStorage.getItem('rprp_reports_archive') || '[]'); } catch(e) { arch = []; }
-          arch.unshift(archived);
-          localStorage.setItem('rprp_reports', JSON.stringify(reports));
-          localStorage.setItem('rprp_reports_archive', JSON.stringify(arch));
-          renderReportsFeed();
-          playNotifSound();
-          showToast('Segnalazione archiviata','success');
+          showConfirmCard('Archivia segnalazione', 'Archiviare questa segnalazione?', 'Archivia', 'Annulla').then(ok => {
+            if(!ok) return;
+            let reports = JSON.parse(localStorage.getItem('rprp_reports') || '[]');
+            const archived = reports.splice(idx, 1)[0];
+            let arch = [];
+            try { arch = JSON.parse(localStorage.getItem('rprp_reports_archive') || '[]'); } catch(e) { arch = []; }
+            arch.unshift(archived);
+            localStorage.setItem('rprp_reports', JSON.stringify(reports));
+            localStorage.setItem('rprp_reports_archive', JSON.stringify(arch));
+            renderReportsFeed();
+            playNotifSound();
+            showToast('Segnalazione archiviata','success');
+          });
         }));
         feed.querySelectorAll('.delete-report').forEach(btn => btn.addEventListener('click', function() {
           const idx = +this.dataset.idx;
-          if (!confirm('Eliminare definitivamente questa segnalazione?')) return;
-          let reports = JSON.parse(localStorage.getItem('rprp_reports') || '[]');
-          reports.splice(idx, 1);
-          localStorage.setItem('rprp_reports', JSON.stringify(reports));
-          renderReportsFeed();
-          playNotifSound();
-          showToast('Segnalazione eliminata','warning');
+          showConfirmCard('Elimina segnalazione', 'Eliminare definitivamente questa segnalazione?', 'Elimina', 'Annulla').then(ok => {
+            if(!ok) return;
+            let reports = JSON.parse(localStorage.getItem('rprp_reports') || '[]');
+            reports.splice(idx, 1);
+            localStorage.setItem('rprp_reports', JSON.stringify(reports));
+            renderReportsFeed();
+            playNotifSound();
+            showToast('Segnalazione eliminata','warning');
+          });
         }));
       }
       document.addEventListener('DOMContentLoaded', function() {
@@ -441,28 +445,32 @@
           playNotifSound();
         });
         if (archiveAllBtn) archiveAllBtn.addEventListener('click', function() {
-          if (!confirm('Archiviare tutte le segnalazioni?')) return;
-          let reports = JSON.parse(localStorage.getItem('rprp_reports') || '[]');
-          let arch = [];
-          try { arch = JSON.parse(localStorage.getItem('rprp_reports_archive') || '[]'); } catch(e) { arch = []; }
-          arch = reports.concat(arch);
-          localStorage.setItem('rprp_reports', '[]');
-          localStorage.setItem('rprp_reports_archive', JSON.stringify(arch));
-          renderReportsFeed();
-          playNotifSound();
-          showToast('Tutte le segnalazioni archiviate','success');
-        });
-        if (deleteAllBtn) deleteAllBtn.addEventListener('click', function() {
-          try {
-            if (!confirm('Eliminare tutte le segnalazioni?')) return;
+          showConfirmCard('Archivia tutte', 'Archiviare tutte le segnalazioni?', 'Archivia tutte', 'Annulla').then(ok => {
+            if(!ok) return;
+            let reports = JSON.parse(localStorage.getItem('rprp_reports') || '[]');
+            let arch = [];
+            try { arch = JSON.parse(localStorage.getItem('rprp_reports_archive') || '[]'); } catch(e) { arch = []; }
+            arch = reports.concat(arch);
             localStorage.setItem('rprp_reports', '[]');
+            localStorage.setItem('rprp_reports_archive', JSON.stringify(arch));
             renderReportsFeed();
             playNotifSound();
-            showToast('Tutte le segnalazioni eliminate','warning');
-          } catch(e) {
-            showToast('Errore: impossibile eliminare tutte le segnalazioni','error');
-            console.error('Errore eliminazione segnalazioni:', e);
-          }
+            showToast('Tutte le segnalazioni archiviate','success');
+          });
+        });
+        if (deleteAllBtn) deleteAllBtn.addEventListener('click', function() {
+          showConfirmCard('Elimina tutte', 'Eliminare tutte le segnalazioni?', 'Elimina tutte', 'Annulla').then(ok => {
+            if(!ok) return;
+            try {
+              localStorage.setItem('rprp_reports', '[]');
+              renderReportsFeed();
+              playNotifSound();
+              showToast('Tutte le segnalazioni eliminate','warning');
+            } catch(e) {
+              showToast('Errore: impossibile eliminare tutte le segnalazioni','error');
+              console.error('Errore eliminazione segnalazioni:', e);
+            }
+          });
         });
         // Fix: re-bind delete buttons after ogni render
         const observer = new MutationObserver(()=>{
@@ -470,13 +478,15 @@
             btn.onclick = function() {
               try {
                 const idx = +this.dataset.idx;
-                if (!confirm('Eliminare definitivamente questa segnalazione?')) return;
-                let reports = JSON.parse(localStorage.getItem('rprp_reports') || '[]');
-                reports.splice(idx, 1);
-                localStorage.setItem('rprp_reports', JSON.stringify(reports));
-                renderReportsFeed();
-                playNotifSound();
-                showToast('Segnalazione eliminata','warning');
+                showConfirmCard('Elimina segnalazione', 'Eliminare definitivamente questa segnalazione?', 'Elimina', 'Annulla').then(ok => {
+                  if(!ok) return;
+                  let reports = JSON.parse(localStorage.getItem('rprp_reports') || '[]');
+                  reports.splice(idx, 1);
+                  localStorage.setItem('rprp_reports', JSON.stringify(reports));
+                  renderReportsFeed();
+                  playNotifSound();
+                  showToast('Segnalazione eliminata','warning');
+                });
               } catch(e) {
                 showToast('Errore: impossibile eliminare la segnalazione','error');
                 console.error('Errore eliminazione singola segnalazione:', e);
@@ -517,6 +527,59 @@
       document.getElementById('staff-name').textContent = staffName;
       document.getElementById('staff-role').textContent = staffRole;
       document.getElementById('staff-avatar').src = staffAvatar;
+
+      // Reusable confirmation card (promise)
+      function showConfirmCard(title, message, confirmText = 'OK', cancelText = 'Annulla'){
+        return new Promise((resolve)=>{
+          // remove existing if any
+          const existing = document.getElementById('confirm-modal-overlay'); if(existing) existing.remove();
+          const overlay = document.createElement('div'); overlay.id = 'confirm-modal-overlay';
+          overlay.style.cssText = 'position:fixed;inset:0;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);background:rgba(6,8,12,0.45);z-index:99999;padding:1.2rem;';
+          const card = document.createElement('div'); card.className = 'glass-card';
+          card.style.cssText = 'max-width:520px;width:100%;border-radius:16px;padding:1.4rem 1.6rem;text-align:center;';
+          card.innerHTML = `
+            <div style="font-size:1.8rem;margin-bottom:.3rem;">❗</div>
+            <div style="font-weight:800;font-size:1.18rem;color:var(--accent-3);margin-bottom:.5rem;">${title}</div>
+            <div style="color:var(--muted);margin-bottom:1.1rem;">${message}</div>
+            <div style="display:flex;gap:.8rem;justify-content:center;margin-top:.6rem;">
+              <button id="confirm-yes" class="shop-btn" style="min-width:120px;border-radius:12px;">${confirmText}</button>
+              <button id="confirm-no" class="btn outline" style="min-width:120px;border-radius:12px;">${cancelText}</button>
+            </div>
+          `;
+          overlay.appendChild(card); document.body.appendChild(overlay);
+          const yes = document.getElementById('confirm-yes'); const no = document.getElementById('confirm-no');
+          function cleanup(result){ try{ overlay.remove(); }catch(e){} document.removeEventListener('keydown', onKey); resolve(result); }
+          function onKey(e){ if(e.key==='Escape'){ cleanup(false); } }
+          overlay.addEventListener('click', function(e){ if(e.target===overlay) cleanup(false); });
+          no.addEventListener('click', ()=>cleanup(false));
+          yes.addEventListener('click', ()=>cleanup(true));
+          document.addEventListener('keydown', onKey);
+          yes.focus();
+        });
+      }
+
+      // Welcome card after login (show once per session)
+      (function showWelcomeOnce(){
+        try{
+          const shown = sessionStorage.getItem('rprp_welcome_shown');
+          if(shown) return;
+          if(!staffName || staffName==='—') return;
+          const overlay = document.createElement('div'); overlay.id = 'welcome-modal-overlay';
+          overlay.style.cssText = 'position:fixed;inset:0;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);background:rgba(4,6,10,0.45);z-index:99990;padding:1.2rem;';
+          const card = document.createElement('div'); card.className = 'glass-card'; card.style.cssText = 'max-width:540px;width:100%;border-radius:18px;padding:1.8rem;text-align:center;';
+          card.innerHTML = `
+            <div style="font-size:2.6rem;margin-bottom:.4rem;filter:drop-shadow(0 2px 12px #f4c43055);">✨</div>
+            <div style="font-weight:900;font-size:1.35rem;color:var(--accent-3);margin-bottom:.6rem;">Benvenuto, ${staffName}!</div>
+            <div style="color:var(--muted);margin-bottom:1.1rem;">Buon lavoro oggi — consulta le segnalazioni o usa i pannelli a disposizione.</div>
+            <div style="display:flex;gap:.8rem;justify-content:center;">
+              <button id="welcome-close" class="shop-btn" style="min-width:140px;border-radius:14px;">Inizia</button>
+            </div>
+          `;
+          overlay.appendChild(card); document.body.appendChild(overlay);
+          document.getElementById('welcome-close').addEventListener('click', function(){ overlay.remove(); sessionStorage.setItem('rprp_welcome_shown','1'); });
+          overlay.addEventListener('click', function(e){ if(e.target===overlay){ overlay.remove(); sessionStorage.setItem('rprp_welcome_shown','1'); }});
+        }catch(e){ console.error('welcome card failed', e); }
+      })();
 
       // Animazione di benvenuto
       const welcome = document.getElementById('welcome-anim');
@@ -837,28 +900,74 @@
       })();
   </script>
   <script>
-    // Logout handler: clears staff session and redirects to login/home
+    // Logout (modal confirmation card) — replaces simple confirm()
     (function(){
+      function createLogoutModal(){
+        if(document.getElementById('logout-modal-overlay')) return;
+        const overlay = document.createElement('div');
+        overlay.id = 'logout-modal-overlay';
+        overlay.style.cssText = 'position:fixed;inset:0;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px) saturate(120%);background:rgba(6,8,12,0.45);z-index:99999;padding:1.6rem;';
+
+        const card = document.createElement('div');
+        card.className = 'glass-card';
+        card.setAttribute('role','dialog');
+        card.setAttribute('aria-modal','true');
+        card.style.cssText = 'max-width:520px;width:100%;border-radius:18px;padding:1.6rem 1.6rem;box-shadow:0 18px 56px rgba(0,0,0,0.45);text-align:center;position:relative;';
+
+        card.innerHTML = `
+          <div style="font-size:2.2rem;margin-bottom:.5rem;">🔒</div>
+          <div style="font-weight:900;font-size:1.25rem;color:var(--accent-3);margin-bottom:.5rem;">Conferma logout</div>
+          <div style="color:var(--muted);margin-bottom:1.2rem;">Sei sicuro di voler effettuare il logout? Verrai reindirizzato alla pagina di accesso.</div>
+          <div style="display:flex;gap:.8rem;justify-content:center;margin-top:.6rem;">
+            <button id="logout-confirm-btn" class="shop-btn" style="border-radius:14px;min-width:120px;">Esci</button>
+            <button id="logout-cancel-btn" class="btn outline" style="border-radius:14px;min-width:120px;">Annulla</button>
+          </div>
+          <button id="logout-close-x" aria-label="Chiudi" style="position:absolute;top:.7rem;right:.7rem;background:transparent;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;">✕</button>
+        `;
+
+        overlay.appendChild(card);
+        document.body.appendChild(overlay);
+
+        // handlers
+        const confirmBtn = document.getElementById('logout-confirm-btn');
+        const cancelBtn = document.getElementById('logout-cancel-btn');
+        const closeX = document.getElementById('logout-close-x');
+
+        function hide(){ overlay.remove(); document.removeEventListener('keydown', onKey); }
+        function onKey(e){ if(e.key === 'Escape') hide(); }
+
+        overlay.addEventListener('click', function(e){ if(e.target === overlay) hide(); });
+        cancelBtn.addEventListener('click', hide);
+        closeX.addEventListener('click', hide);
+        confirmBtn.addEventListener('click', function(){ doLogout(); });
+
+        // focus management
+        confirmBtn.focus();
+        document.addEventListener('keydown', onKey);
+      }
+
       function doLogout(){
         try{
           sessionStorage.removeItem('rprp_staff');
-          // optional: clear other staff-related keys if present
           try{ localStorage.removeItem('rprp_staff_profile'); }catch(e){}
+          // hide modal if present
+          const ov = document.getElementById('logout-modal-overlay'); if(ov) ov.remove();
           if(typeof showNotif === 'function'){
             showNotif('Logout','Hai effettuato il logout.', 'info');
             setTimeout(function(){ window.location.href = 'staff-login.html'; }, 700);
           } else {
-            // fallback
             setTimeout(function(){ window.location.href = 'staff-login.html'; }, 150);
           }
         }catch(e){ console.error('logout failed', e); window.location.href = 'index.html'; }
       }
+
       document.addEventListener('DOMContentLoaded', function(){
         var btn = document.getElementById('staff-logout');
-        if(btn){ btn.addEventListener('click', function(e){ e.preventDefault(); if(confirm('Sei sicuro di voler effettuare il logout?')) doLogout(); }); }
+        if(btn){ btn.addEventListener('click', function(e){ e.preventDefault(); createLogoutModal(); }); }
       });
+
       // expose for manual call
-      window.staffLogout = doLogout;
+      window.staffLogout = function(){ createLogoutModal(); };
     })();
   </script>
   <!-- Site announcement renderer (shows site-wide popup if published by staff) -->
@@ -866,27 +975,64 @@
   (function(){
     try{
       function removeOverlay(){ const existing = document.getElementById('site-ann-overlay'); if(existing) existing.remove(); }
-      function renderSiteAnnouncement(ann){ try{
-        removeOverlay();
-        if(!ann || !ann.active) return;
-        if(ann.expiresAt && Date.now() > ann.expiresAt) return;
-        const dismissKey = 'rprp_site_announcement_dismissed_' + (ann.id || 'default');
-        if(sessionStorage.getItem(dismissKey)) return;
-        if(document.getElementById('site-ann-overlay')) return;
-        const overlay = document.createElement('div'); overlay.id = 'site-ann-overlay';
-        const card = document.createElement('div'); card.className = 'site-announcement';
-        const closeBtn = document.createElement('button'); closeBtn.className = 'close-btn'; closeBtn.innerHTML = '✕';
-        closeBtn.addEventListener('click', ()=>{ sessionStorage.setItem(dismissKey,'1'); overlay.remove(); });
-        const title = document.createElement('h3'); title.innerHTML = ann.title || 'Annuncio';
-        const body = document.createElement('div'); body.className = 'body'; body.innerHTML = ann.html || ann.text || '';
-        const actions = document.createElement('div'); actions.className = 'actions';
-        const ok = document.createElement('button'); ok.className = 'btn primary'; ok.textContent = 'Chiudi'; ok.addEventListener('click', ()=>{ sessionStorage.setItem(dismissKey,'1'); overlay.remove(); });
-        actions.appendChild(ok);
-        card.appendChild(closeBtn); card.appendChild(title); card.appendChild(body); card.appendChild(actions);
-        overlay.appendChild(card);
-        document.body.appendChild(overlay);
-        setTimeout(()=> overlay.classList.add('show'), 10);
-      }catch(e){ console.error('renderSiteAnnouncement failed', e); }}
+      function renderSiteAnnouncement(ann){
+        try{
+          removeOverlay();
+          if(!ann || !ann.active) return;
+          // If expired, don't show
+          if(ann.expiresAt && Date.now() > ann.expiresAt) return;
+          const dismissKey = 'rprp_site_announcement_dismissed_' + (ann.id || 'default');
+          if(sessionStorage.getItem(dismissKey)) return;
+          if(document.getElementById('site-ann-overlay')) return;
+
+          // Create overlay/card
+          const overlay = document.createElement('div'); overlay.id = 'site-ann-overlay';
+          overlay.style.cssText = 'position:fixed;inset:0;display:flex;align-items:flex-end;justify-content:center;pointer-events:auto;z-index:120000;padding:20px;';
+
+          const card = document.createElement('div'); card.className = 'glass-card site-ann-card';
+          card.style.cssText = 'max-width:760px;width:100%;border-radius:14px;padding:14px 16px;box-shadow:0 18px 48px rgba(8,10,20,0.6);backdrop-filter:blur(8px) saturate(120%);position:relative;overflow:hidden;transform:translateY(8px);opacity:0;transition:all .32s ease';
+
+          const closeBtn = document.createElement('button'); closeBtn.className = 'close-btn'; closeBtn.innerHTML = '✕';
+          closeBtn.style.cssText = 'position:absolute;right:10px;top:8px;background:transparent;border:none;color:var(--muted);font-size:1rem;cursor:pointer;';
+
+          const title = document.createElement('h3'); title.style.cssText = 'margin:0 0 6px 0;font-size:1.15rem;'; title.innerHTML = ann.title || 'Annuncio';
+          const body = document.createElement('div'); body.className = 'body'; body.style.cssText = 'color:var(--text);margin-bottom:8px;'; body.innerHTML = ann.html || ann.text || '';
+
+          const metaRow = document.createElement('div'); metaRow.style.cssText = 'display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px;';
+          const leftMeta = document.createElement('div'); leftMeta.style.cssText = 'color:var(--muted);font-size:.92rem;'; leftMeta.textContent = ann.author ? 'By: ' + ann.author : '';
+          const timerText = document.createElement('div'); timerText.style.cssText = 'font-weight:700;color:var(--accent-3);font-size:.95rem;'; timerText.textContent = '';
+          metaRow.appendChild(leftMeta); metaRow.appendChild(timerText);
+
+          const progressOuter = document.createElement('div'); progressOuter.style.cssText = 'height:8px;background:rgba(255,255,255,0.04);border-radius:999px;overflow:hidden;margin-top:6px;';
+          const progressInner = document.createElement('div'); progressInner.style.cssText = 'height:100%;width:0%;background:linear-gradient(90deg,var(--accent-3),var(--accent));transition:width .6s linear;';
+          progressOuter.appendChild(progressInner);
+
+          const actions = document.createElement('div'); actions.style.cssText = 'display:flex;gap:8px;justify-content:flex-end;margin-top:10px;';
+          const dismissBtn = document.createElement('button'); dismissBtn.className = 'btn outline'; dismissBtn.textContent = 'Nascondi per questa sessione';
+          const closeNow = document.createElement('button'); closeNow.className = 'btn primary'; closeNow.textContent = 'Chiudi';
+          actions.appendChild(dismissBtn); actions.appendChild(closeNow);
+
+          card.appendChild(closeBtn); card.appendChild(title); card.appendChild(body); card.appendChild(metaRow); card.appendChild(progressOuter); card.appendChild(actions);
+          overlay.appendChild(card); document.body.appendChild(overlay);
+
+          // Timing logic
+          let totalMs = null; let remainingMs = null; let intervalId = null;
+          if(ann.expiresAt){ totalMs = Math.max(1000, (ann.expiresAt - (ann.ts || Date.now())) ); remainingMs = Math.max(0, ann.expiresAt - Date.now()); }
+          else if(ann.durationMin && ann.durationMin>0){ totalMs = ann.durationMin*60000; remainingMs = totalMs; ann.expiresAt = Date.now()+totalMs; ann.ts = Date.now(); }
+
+          function formatMs(ms){ const s = Math.ceil(ms/1000); const m = Math.floor(s/60); const sec = s%60; return m>0? `${m}m ${sec}s` : `${sec}s`; }
+          function updateTimer(){ if(!ann.expiresAt){ timerText.textContent = ''; progressInner.style.width = '100%'; return; } remainingMs = Math.max(0, ann.expiresAt - Date.now()); timerText.textContent = formatMs(remainingMs); if(totalMs){ const pct = Math.max(0, Math.min(100, Math.round((remainingMs/totalMs)*100))); progressInner.style.width = pct + '%'; } if(remainingMs <= 0){ cleanup(); } }
+          function cleanup(){ try{ overlay.remove(); }catch(e){} if(intervalId) clearInterval(intervalId); }
+
+          // handlers
+          closeBtn.addEventListener('click', ()=>{ cleanup(); sessionStorage.setItem(dismissKey,'1'); });
+          dismissBtn.addEventListener('click', ()=>{ cleanup(); sessionStorage.setItem(dismissKey,'1'); });
+          closeNow.addEventListener('click', ()=>{ cleanup(); });
+
+          updateTimer(); if(ann.expiresAt){ intervalId = setInterval(updateTimer, 1000); }
+          setTimeout(()=>{ card.style.transform='translateY(0)'; card.style.opacity=1; }, 20);
+        }catch(e){ console.error('renderSiteAnnouncement failed', e); }
+      }
       function loadAndRender(){ try{ const raw = localStorage.getItem('rprp_site_announcement'); if(!raw){ removeOverlay(); return; } const ann = JSON.parse(raw); renderSiteAnnouncement(ann); }catch(e){ console.error('loadAndRender failed', e); } }
       loadAndRender();
       window.addEventListener('storage', function(e){ if(e.key === 'rprp_site_announcement'){ try{ if(!e.newValue){ removeOverlay(); return; } loadAndRender(); }catch(err){ console.error('storage listener error', err); } } });
